@@ -1,0 +1,14 @@
+# Logs
+logs
+*.log
+
+#react
+dist
+dist-ssr
+*.local
+
+#project wide
+node_modules
+.env
+rundev.sh
+
