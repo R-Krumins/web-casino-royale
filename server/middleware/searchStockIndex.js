@@ -1,5 +1,5 @@
 const Fuse = require("fuse.js");
-const data = require("./index.json");
+const data = require("./stockIndex.json");
 
 // how many search resulst to return?
 const RESULTS_COUNT = 5;
@@ -12,9 +12,10 @@ const options = {
 
 const fuse = new Fuse(data, options);
 
-function searchStocks(searchTerm) {
-  const results = fuse.search(searchTerm);
-  return results.slice(0, RESULTS_COUNT);
+function searchStockIndex(req, res, next) {
+  const results = fuse.search(req.query.q);
+  req.stock = results.slice(0, RESULTS_COUNT);
+  next();
 }
 
-module.exports = searchStocks;
+module.exports = searchStockIndex;
