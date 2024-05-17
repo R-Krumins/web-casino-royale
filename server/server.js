@@ -4,6 +4,7 @@ const stocksRouter = require("./routes/stocks");
 const cors = require("cors");
 const { Server } = require("socket.io");
 const mongoose = require("mongoose");
+const userHandler = require("./handlers/userHandler");
 require("dotenv").config();
 
 //.env variables
@@ -31,19 +32,17 @@ app.get("/", (req, res) => {
   res.send("HEllO?!? UWU");
 });
 
+//scoket.io
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
-
-  socket.on("init", () => {
-    console.log(socket.id + " has started sim play");
-  });
+  userHandler(io, socket);
 });
 
 //attempt db connection and start server
 mongoose
   .connect(process.env.DB_URL)
   .then(() => {
-    server.listen(PORT, () => console.log(`PORT IS LISTENING ON ${PORT}...`));
+    server.listen(PORT, () => console.log(`LISTENING ON PORT ${PORT}...`));
   })
   .catch((error) => {
     throw new Error(error);
