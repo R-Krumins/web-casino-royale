@@ -47,10 +47,3 @@ mongoose
   .catch((error) => {
     throw new Error(error);
   });
-
-// let i = 0;
-// setInterval(() => {
-//   ++i;
-
-//   io.volatile.emit("update", i);
-// }, 1000);

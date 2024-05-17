@@ -1,10 +1,10 @@
-import SearchBar from "./components/SearchBar";
 import Navbar from "./components/Navbar";
 import Portfolio from "./pages/Portfolio";
 import Market from "./pages/Market";
 import { Routes, Route } from "react-router-dom";
 import * as io from "socket.io-client";
 import { useEffect, useState } from "react";
+import { SocketContext } from "./context";
 
 const socket = io.connect("http://localhost:3000");
 
@@ -15,20 +15,17 @@ function App() {
     socket.emit("init");
   }, []);
 
-  useEffect(() => {
-    socket.on("update", (data) => {
-      setCount(data);
-    });
-  }, [socket]);
   return (
     <>
-      <Navbar />
-      <div className="container">
-        <Routes>
-          <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/market" element={<Market price={count} />} />
-        </Routes>
-      </div>
+      <SocketContext.Provider value={socket}>
+        <Navbar />
+        <div className="container">
+          <Routes>
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/market" element={<Market price={count} />} />
+          </Routes>
+        </div>
+      </SocketContext.Provider>
     </>
   );
 }
