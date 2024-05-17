@@ -7,7 +7,7 @@ const StockSchema = new Schema({
   data: {
     type: [
       {
-        date: { type: Date },
+        date: { type: String },
         open: { type: Number },
         high: { type: Number },
         low: { type: Number },
