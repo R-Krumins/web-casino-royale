@@ -1,16 +1,12 @@
 import React, { useState } from "react";
+import { SearchResult } from "../types";
 
-interface SeachResult {
-  item: {
-    symbol: string;
-    name: string;
-  };
-  refIndex: number;
-  score: number;
-}
+type Props = {
+  onSelectResult: (result: SearchResult) => void;
+};
 
-const SearchBar: React.FC = () => {
-  const [searchResults, setSearchResults] = useState<SeachResult[]>();
+function SearchBar(props: Props) {
+  const [searchResults, setSearchResults] = useState<SearchResult[]>();
   const [isSearching, setIsSearching] = useState<boolean>(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +38,7 @@ const SearchBar: React.FC = () => {
       <ul>
         {searchResults &&
           searchResults.map((sr, index) => (
-            <li key={index}>
+            <li key={index} onClick={() => props.onSelectResult(sr)}>
               <p>
                 <strong>{sr.item.symbol}</strong> {sr.item.name}
               </p>
@@ -51,6 +47,6 @@ const SearchBar: React.FC = () => {
       </ul>
     </div>
   );
-};
+}
 
 export default SearchBar;

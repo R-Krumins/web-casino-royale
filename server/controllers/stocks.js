@@ -1,3 +1,5 @@
+const { Stock, StockDataPoint } = require("../models/Stock");
+
 function findStock(req, res) {
   const q = req.query.q;
   const stock = req.stock;
@@ -12,6 +14,16 @@ function findStock(req, res) {
   res.status(200).json({ success: true, data: stock });
 }
 
+async function getStockBySymbol(req, res) {
+  const stock = await Stock.findOne({ stock: req.params.symbol });
+  if (stock) {
+    res.status(200).json(stock);
+  } else {
+    res.status(404).json({ message: "Stock not found" });
+  }
+}
+
 module.exports = {
   findStock,
+  getStockBySymbol,
 };

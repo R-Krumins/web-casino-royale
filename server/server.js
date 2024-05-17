@@ -1,11 +1,25 @@
 const express = require("express");
-require("dotenv").config();
+const http = require("http");
 const stocksRouter = require("./routes/stocks");
+const cors = require("cors");
+const { Server } = require("socket.io");
+const mongoose = require("mongoose");
+require("dotenv").config();
 
 //.env variables
 const PORT = process.env.PORT;
 
+//server setup
 const app = express();
+app.use(cors());
+
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5000",
+    methods: ["GET", "POST"],
+  },
+});
 
 //middleware
 //TODO: move to ./middleware
@@ -17,5 +31,27 @@ app.get("/", (req, res) => {
   res.send("HEllO?!? UWU");
 });
 
-//start server
-app.listen(PORT, () => console.log(`PORT IS LISTENING ON ${PORT}...`));
+io.on("connection", (socket) => {
+  console.log(`User Connected: ${socket.id}`);
+
+  socket.on("init", () => {
+    console.log(socket.id + " has started sim play");
+  });
+});
+
+//attempt db connection and start server
+mongoose
+  .connect(process.env.DB_URL)
+  .then(() => {
+    server.listen(PORT, () => console.log(`PORT IS LISTENING ON ${PORT}...`));
+  })
+  .catch((error) => {
+    throw new Error(error);
+  });
+
+// let i = 0;
+// setInterval(() => {
+//   ++i;
+
+//   io.volatile.emit("update", i);
+// }, 1000);
