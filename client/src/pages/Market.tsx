@@ -27,7 +27,7 @@ function Market(props: Props) {
         {stock &&
           stock.map((cum: any, index: any) => (
             <p key={index}>
-              {cum["Date"].split("T")[0] + " -> " + cum["Open"]}
+              {cum["date"].split("T")[0] + " -> " + cum["open"]}
             </p>
           ))}
       </div>

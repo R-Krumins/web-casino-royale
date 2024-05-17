@@ -4,6 +4,6 @@ const { findStock, getStockBySymbol } = require("../controllers/stocks");
 const searchStockIndex = require("../middleware/searchStockIndex");
 
 router.route("/search").get(searchStockIndex, findStock);
-router.route("/:symbol").get(getStockBySymbol);
+router.route("/:id").get(getStockBySymbol);
 
 module.exports = router;

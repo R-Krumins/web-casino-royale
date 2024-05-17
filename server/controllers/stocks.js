@@ -15,7 +15,7 @@ function findStock(req, res) {
 }
 
 async function getStockBySymbol(req, res) {
-  const stock = await Stock.findOne({ stock: req.params.symbol });
+  const stock = await Stock.findOne({ _id: req.params.id });
   if (stock) {
     res.status(200).json(stock);
   } else {
