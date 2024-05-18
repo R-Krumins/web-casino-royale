@@ -14,16 +14,14 @@ function SearchBar(props: Props) {
   };
 
   const handleSearch = async (query: string) => {
-    try {
-      setIsSearching(true);
-      const response = await fetch(`/api/stocks/search?q=${query}`);
-      const data = await response.json();
-      setSearchResults(data.data);
-    } catch (error) {
-      console.error("Error searching:", error);
-    } finally {
-      setIsSearching(false);
+    setIsSearching(true);
+    const response = await fetch(`/api/stocks/search?q=${query}`);
+    const json = await response.json();
+
+    if (response.ok) {
+      setSearchResults(json.data);
     }
+    setIsSearching(false);
   };
 
   return (

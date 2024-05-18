@@ -1,9 +1,9 @@
 const exprss = require("express");
-const router = exprss.Router();
+const stockRouter = exprss.Router();
 const { findStock, getStockBySymbol } = require("../controllers/stocks");
 const searchStockIndex = require("../middleware/searchStockIndex");
 
-router.route("/search").get(searchStockIndex, findStock);
-router.route("/:id").get(getStockBySymbol);
+stockRouter.route("/search").get(searchStockIndex, findStock);
+stockRouter.route("/:id").get(getStockBySymbol);
 
-module.exports = router;
+module.exports = stockRouter;

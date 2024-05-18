@@ -1,6 +1,7 @@
 const express = require("express");
 const http = require("http");
 const stocksRouter = require("./routes/stocks");
+const userRouter = require("./routes/users");
 const cors = require("cors");
 const { Server } = require("socket.io");
 const mongoose = require("mongoose");
@@ -23,11 +24,12 @@ const io = new Server(server, {
 });
 
 //middleware
-//TODO: move to ./middleware
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 //routing
 app.use("/api/stocks", stocksRouter);
+app.use("/api/users", userRouter);
 app.get("/", (req, res) => {
   res.send("HEllO?!? UWU");
 });
