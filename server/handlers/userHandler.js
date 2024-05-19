@@ -18,20 +18,23 @@ module.exports = (io, socket) => {
     socket.volatile.emit("update", { date: date, update: update });
   }
 
-  function formatDate(date) {
-    return;
-  }
-
   function init() {
-    console.log(`Bobby has started their sim`);
-    let date = new Date("2019-01-01");
+    const name = "Bobby";
+    let simDate = new Date("2017-01-01");
+    let simSpeed = 0;
 
-    // getPorfolio("Bobby", format(date, "yyyy/MM/dd"));
+    console.log(`${name} has started their sim`);
 
     setInterval(() => {
-      getPorfolio("Bobby", format(date, "yyyy-MM-dd"));
-      date = addDays(date, 1);
+      if (simSpeed === 0) return;
+      getPorfolio("Bobby", format(simDate, "yyyy-MM-dd"));
+      simDate = addDays(simDate, 1);
     }, 1000);
+
+    socket.on("change-speed", (speed) => {
+      console.log(`${name} changed their sim speed to ${speed}`);
+      simSpeed = speed;
+    });
   }
 
   socket.on("init", init);
