@@ -1,5 +1,5 @@
-const { User } = require("../models/User");
-const { Stock } = require("../models/Stock");
+const { User } = require("../models/userModel");
+const { Stock } = require("../models/stockModel");
 const { format, addDays } = require("date-fns");
 const log = require("../lib/logger")();
 

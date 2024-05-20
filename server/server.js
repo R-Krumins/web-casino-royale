@@ -1,8 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const http = require("http");
-const stocksRouter = require("./routes/stocks");
-const userRouter = require("./routes/users");
+const stocksRouter = require("./routes/stocksRouter");
+const userRouter = require("./routes/usersRouter");
 const cors = require("cors");
 const { Server } = require("socket.io");
 const mongoose = require("mongoose");

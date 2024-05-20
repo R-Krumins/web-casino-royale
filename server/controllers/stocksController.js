@@ -1,4 +1,4 @@
-const { Stock, StockDataPoint } = require("../models/Stock");
+const { Stock, StockDataPoint } = require("../models/stockModel");
 
 async function findStock(req, res) {
   const q = req.query.q;
