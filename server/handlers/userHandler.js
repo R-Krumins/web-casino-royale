@@ -1,6 +1,7 @@
 const { User } = require("../models/User");
 const { Stock } = require("../models/Stock");
 const { format, addDays } = require("date-fns");
+const log = require("../lib/logger")();
 
 module.exports = (io, socket) => {
   async function getPorfolio(userName, date) {
@@ -23,7 +24,7 @@ module.exports = (io, socket) => {
     let simDate = new Date("2017-01-01");
     let simSpeed = 0;
 
-    console.log(`${name} has started their sim`);
+    log.info(`${name} has started their sim`);
 
     setInterval(() => {
       if (simSpeed === 0) return;
@@ -32,7 +33,7 @@ module.exports = (io, socket) => {
     }, 1000);
 
     socket.on("change-speed", (speed) => {
-      console.log(`${name} changed their sim speed to ${speed}`);
+      log.debug(`${name} changed their sim speed to ${speed}`);
       simSpeed = speed;
     });
   }

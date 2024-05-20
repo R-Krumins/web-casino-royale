@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const http = require("http");
 const stocksRouter = require("./routes/stocks");
@@ -6,7 +7,7 @@ const cors = require("cors");
 const { Server } = require("socket.io");
 const mongoose = require("mongoose");
 const userHandler = require("./handlers/userHandler");
-require("dotenv").config();
+const log = require("./lib/logger")();
 
 //.env variables
 const PORT = process.env.PORT;
@@ -36,7 +37,7 @@ app.get("/", (req, res) => {
 
 //scoket.io
 io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
+  log.info(`User Connected: ${socket.id}`);
   userHandler(io, socket);
 });
 
