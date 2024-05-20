@@ -24,7 +24,7 @@ module.exports = (io, socket) => {
     let simDate = new Date("2017-01-01");
     let simSpeed = 0;
 
-    log.info(`${name} has started their sim`);
+    log.info(`${name} started SIM PLAY`);
 
     setInterval(() => {
       if (simSpeed === 0) return;
@@ -33,7 +33,7 @@ module.exports = (io, socket) => {
     }, 1000);
 
     socket.on("change-speed", (speed) => {
-      log.debug(`${name} changed their sim speed to ${speed}`);
+      log.debug(`${name} changed SIM SPEED to ${speed}`);
       simSpeed = speed;
     });
   }
