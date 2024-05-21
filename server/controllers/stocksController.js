@@ -10,7 +10,6 @@ async function findStock(req, res) {
       .json({ success: false, msg: `No results for '${q}'` });
   }
 
-  console.log(`Searhed for ${q}`); //TODO: move this to proper logger
   res.status(200).json({ success: true, data: stock });
 }
 

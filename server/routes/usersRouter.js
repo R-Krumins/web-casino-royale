@@ -1,8 +1,9 @@
 const exprss = require("express");
 const userRouter = exprss.Router();
-const { getUser, createUser } = require("../controllers/usersController");
+const requireAuth = require("../middleware/requireAuth");
+const { getUser } = require("../controllers/usersController");
 
-userRouter.route("/:userName").get(getUser);
-userRouter.route("/").post(createUser);
+userRouter.use(requireAuth);
+userRouter.route("/:username").get(getUser);
 
 module.exports = userRouter;

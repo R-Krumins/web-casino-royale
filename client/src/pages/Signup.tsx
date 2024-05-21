@@ -1,46 +1,22 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSignup } from "../hooks/useSignup";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [usernameError, setUsernameError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const { signup, isLoading, usernameError, passwordError } = useSignup();
   const navigate = useNavigate();
 
-  const onSubmit = async (e: React.MouseEvent) => {
+  const handleSumbit = async (e: any) => {
     e.preventDefault();
 
-    // reset errors
-    setUsernameError("");
-    setPasswordError("");
-
-    try {
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        body: JSON.stringify({ username, password }),
-        headers: { "Content-Type": "application/json" },
-      });
-      const data = await res.json();
-
-      console.log(data);
-
-      if (data.errors) {
-        setUsernameError(data.errors.username);
-        setPasswordError(data.errors.password);
-      }
-
-      if (data.user) {
-        navigate("/portfolio");
-      }
-    } catch (err) {
-      console.log(err);
-    }
+    await signup(username, password);
   };
 
   return (
     <div className="auth-container">
-      <form action="" className="auth-form signup">
+      <form onSubmit={handleSumbit} className="auth-form signup">
         <h2>Sign Up</h2>
         <label htmlFor="username">Username</label>
         <input
@@ -61,7 +37,7 @@ function Login() {
           required
         />
         <div className="error password">{passwordError}</div>
-        <button onClick={onSubmit}>Sign Up</button>
+        <button disabled={isLoading}>Sign Up</button>
         <Link to="/login">or login</Link>
       </form>
     </div>

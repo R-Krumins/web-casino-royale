@@ -1,43 +1,22 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useLogin } from "../hooks/useLogin";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  const { login, isLoading, errorMsg } = useLogin();
   const navigate = useNavigate();
 
-  const onSubmit = async (e: React.MouseEvent) => {
+  const handleSumbit = async (e: any) => {
     e.preventDefault();
 
-    // reset error
-    setErrorMsg("");
-
-    try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        body: JSON.stringify({ username, password }),
-        headers: { "Content-Type": "application/json" },
-      });
-      const data = await res.json();
-
-      console.log(data);
-
-      if (data.errors) {
-        setErrorMsg(data.errors.msg);
-      }
-
-      if (data.user) {
-        navigate("/portfolio");
-      }
-    } catch (err) {
-      console.log(err);
-    }
+    await login(username, password);
   };
 
   return (
     <div className="auth-container">
-      <form action="" className="auth-form signup">
+      <form onSubmit={handleSumbit} className="auth-form signup">
         <h2>Login</h2>
 
         <div className="error username">{errorMsg}</div>
@@ -59,7 +38,7 @@ function Login() {
           name="password"
           required
         />
-        <button onClick={onSubmit}>Log in</button>
+        <button disabled={isLoading}>Log in</button>
         <Link to="/">or sign up</Link>
       </form>
     </div>
