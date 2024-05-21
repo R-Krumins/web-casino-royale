@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const DataPointSchema = new Schema(
+const dataPointSchema = new Schema(
   {
     date: { type: String },
     open: { type: Number },
@@ -15,15 +15,15 @@ const DataPointSchema = new Schema(
   { _id: false }
 );
 
-const StockSchema = new Schema({
+const stockSchema = new Schema({
   _id: { type: String, required: true },
   data: {
-    type: [DataPointSchema],
+    type: [dataPointSchema],
     required: true,
   },
 });
 
-const Stock = mongoose.model("Stock", StockSchema);
+const Stock = mongoose.model("Stock", stockSchema);
 
 module.exports = {
   Stock,

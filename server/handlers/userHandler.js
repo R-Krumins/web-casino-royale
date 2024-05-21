@@ -5,7 +5,7 @@ const log = require("../lib/logger")();
 
 module.exports = (io, socket) => {
   async function getPorfolio(userName, date) {
-    const user = await User.findOne({ userName: userName });
+    const user = await User.findOne({ username: userName });
 
     const update = await Promise.all(
       user.portfolio.map(async (item) => {

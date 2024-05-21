@@ -2,9 +2,9 @@ const { User } = require("../models/userModel");
 
 //TODO: add auth
 async function getUser(req, res) {
-  const { userName } = req.params;
+  const { username } = req.params;
 
-  const user = await User.findOne({ userName: userName });
+  const user = await User.findOne({ username: username });
   console.log(user.get("userName"));
 
   if (!user) {
@@ -15,10 +15,10 @@ async function getUser(req, res) {
 }
 
 async function createUser(req, res) {
-  const { userName, passwHash, portfolio } = req.body;
+  const { username, password, portfolio } = req.body;
 
   try {
-    const user = await User.create({ userName, passwHash, portfolio });
+    const user = await User.create({ username, password, portfolio });
     res.status(200).json(user);
   } catch (error) {
     res.status(400).json({ error: error.message });

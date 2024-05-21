@@ -1,14 +1,12 @@
 const winston = require("winston");
 const caller = require("caller");
 
-const { combine, timestamp, printf, label, colorize } = winston.format;
+const { combine, timestamp, printf, label, colorize, errors } = winston.format;
 
 // GLOBALS
 const LOG_FILE = "./logs/log.log";
 const FILE_LOG_LEVEL = process.env.FILE_LOG_LEVEL;
 const CONSOLE_LOG_LEVEL = process.env.CONSOLE_LOG_LEVEL;
-
-console.log(FILE_LOG_LEVEL, CONSOLE_LOG_LEVEL);
 
 /*--LOG LEVELS---
     error: 0
@@ -48,7 +46,7 @@ function createLogger(_name) {
 
   return winston.createLogger({
     transports: [consoleTransport, fileTransport],
-    format: combine(label({ label: name })),
+    format: combine(label({ label: name }), errors({ stack: true })),
     //winston logs errors twice for some reason
     // exceptionHandlers: [consoleTransport, fileTransport],
     exitOnError: false,

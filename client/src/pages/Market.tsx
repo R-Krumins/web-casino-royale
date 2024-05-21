@@ -3,11 +3,7 @@ import SearchBar from "../components/SearchBar";
 import { SearchResult } from "../types";
 import { json } from "react-router-dom";
 
-type Props = {
-  price: number;
-};
-
-function Market(props: Props) {
+function Market() {
   const [stock, setStock] = useState<object[]>();
 
   const onSelectResult = async (result: SearchResult) => {

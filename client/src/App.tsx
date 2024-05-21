@@ -5,12 +5,12 @@ import { Routes, Route } from "react-router-dom";
 import * as io from "socket.io-client";
 import { useEffect, useState } from "react";
 import { SocketContext } from "./context";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
 
 const socket = io.connect("http://localhost:3000");
 
 function App() {
-  const [count, setCount] = useState<number>(0);
-
   useEffect(() => {
     socket.emit("init");
   }, []);
@@ -21,8 +21,10 @@ function App() {
         <Navbar />
         <div className="container">
           <Routes>
+            <Route path="/" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/portfolio" element={<Portfolio />} />
-            <Route path="/market" element={<Market price={count} />} />
+            <Route path="/market" element={<Market />} />
           </Routes>
         </div>
       </SocketContext.Provider>

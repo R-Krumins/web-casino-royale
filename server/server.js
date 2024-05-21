@@ -3,11 +3,13 @@ const express = require("express");
 const http = require("http");
 const stocksRouter = require("./routes/stocksRouter");
 const userRouter = require("./routes/usersRouter");
+const authRouter = require("./routes/authRouter");
 const cors = require("cors");
 const { Server } = require("socket.io");
 const mongoose = require("mongoose");
 const userHandler = require("./handlers/userHandler");
 const log = require("./lib/logger")();
+const cookieParser = require("cookie-parser");
 
 //.env variables
 const PORT = process.env.PORT;
@@ -27,13 +29,15 @@ const io = new Server(server, {
 //middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cookieParser());
 
 //routing
-app.use("/api/stocks", stocksRouter);
-app.use("/api/users", userRouter);
 app.get("/", (req, res) => {
   res.send("HEllO?!? UWU");
 });
+app.use("/api/stocks", stocksRouter);
+app.use("/api/users", userRouter);
+app.use("/api/auth", authRouter);
 
 //scoket.io
 io.on("connection", (socket) => {
