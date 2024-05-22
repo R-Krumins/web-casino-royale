@@ -39,7 +39,7 @@ function Login() {
           required
         />
         <button disabled={isLoading}>Log in</button>
-        <Link to="/">or sign up</Link>
+        <Link to="/signup">or sign up</Link>
       </form>
     </div>
   );

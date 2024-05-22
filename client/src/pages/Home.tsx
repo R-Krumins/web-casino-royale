@@ -1,81 +1,42 @@
 /// <reference types="vite-plugin-svgr/client" />
 
-import React, { useState } from "react";
-import "../home2.css";
-import Crown from "../assets/crown.svg?react";
-import FingerPointer from "../assets/pointing-finger.svg?react";
-
-const pointToSignUp = {
-  left: "-5%",
-  bottom: "20%",
-  transform: "rotate(14deg)",
-};
-const pointToLogin = {
-  left: "-5%",
-  bottom: "-5%",
-  transform: "rotate(-14deg)",
-};
+import React from "react";
+import CrownLogo from "../assets/crown.svg?react";
+import SearchIcon from "../assets/search.svg?react";
+import "../home.css";
 
 function Home() {
-  const [pointerPos, setPointerPos] = useState(pointToSignUp);
-
-  const handleMouseOver = (color: string, pointer: any) => {
-    setPointerPos(pointer);
-    document.documentElement.style.setProperty("--color", color);
-  };
-
-  // const handleMouseOut = () => {
-  //   document.documentElement.style.setProperty("--color", "#001219");
-  //   console.log("CUM");
-  // };
-
   return (
-    <div className="home">
-      <div className="container">
-        <FingerPointer
-          style={{ fill: "var(--color)", ...pointerPos }}
-          id="pointing-finger"
-        />
-
-        <p id="q1">
-          “The most important quality for an investor is temperament, not
-          intellect.” - Warren Buffet
-        </p>
-
+    <div id="home-page">
+      <div id="bg-overlay"></div>
+      <div id="home-content">
         <div id="title-div">
-          <h1 className="title">CASINO </h1>
-          <Crown style={{ fill: "var(--color)", width: "7em" }} id="crown" />
-          <h1 className="title"> ROYALE</h1>
+          <CrownLogo id="crown-logo" />
+          <h1>Casino Royale</h1>
         </div>
 
-        <hr id="line-break" />
-        <h3 className="subtitle">
-          Will you be the next Warren Buffet or just another r/wallstreetbets
-          member?
-        </h3>
+        <div id="top-bar">
+          <div id="home-options">
+            <SearchIcon id="search-icon" />
+            <input
+              type="text"
+              id="home-search"
+              placeholder="search stock db..."
+            />
+            <button id="home-login-btn">Log In</button>
+            <button id="home-singup-btn">Sign Up</button>
+          </div>
+        </div>
 
-        <div id="auth-options">
-          <button
-            onMouseOver={() => {
-              handleMouseOver("#9b2226", pointToSignUp);
-            }}
-            // onMouseOut={() => handleMouseOut()}
-          >
-            Sign Up
-          </button>
-
-          <p>
-            <strong>OR</strong>
+        <div id="quote-div">
+          <p id="quote">
+            “Thousands of experts study overbought indicators, head-and-shoulder
+            patterns, put-call ratios, the Fed’s policy on money supply…and they
+            can’t predict markets with any useful consistency, any more than the
+            gizzard squeezers could tell the Roman emperors when the Huns would
+            attack.”
           </p>
-
-          <button
-            onMouseOver={() => {
-              handleMouseOver("#264653", pointToLogin);
-            }}
-            // onMouseOut={() => handleMouseOut()}
-          >
-            Log In
-          </button>
+          <p id="author">Peter Lynch</p>
         </div>
       </div>
     </div>
