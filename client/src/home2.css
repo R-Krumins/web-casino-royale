@@ -59,7 +59,8 @@ body {
 }
 
 #pointing-finger {
-  width: 25rem;
+  width: 34vw;
+  max-width: 25rem;
   position: absolute;
 
   -moz-transition: var(--trans);
@@ -71,15 +72,20 @@ body {
 .home div.container {
   background-color: #fff5ee;
   max-width: 800px;
+  min-width: 200px;
   height: 89%;
   position: relative;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-button {
+#auth-options button {
   background-color: transparent;
   border: 3px solid var(--color);
   font-size: 3.5rem;
   padding: 1rem;
+
+  width: 16vw;
 
   /* color */
   color: var(--color);
@@ -90,5 +96,15 @@ button {
 }
 
 #auth-options {
-  margin-top: 18em;
+  position: absolute;
+  left: 32%;
+  bottom: 25%;
+}
+
+#q1 {
+  max-width: 200px;
+  position: absolute;
+  left: -400px;
+  top: 50px;
+  color: #fff5ee;
 }

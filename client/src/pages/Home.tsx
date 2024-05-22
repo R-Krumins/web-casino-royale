@@ -6,13 +6,13 @@ import Crown from "../assets/crown.svg?react";
 import FingerPointer from "../assets/pointing-finger.svg?react";
 
 const pointToSignUp = {
-  left: "-34px",
-  bottom: "180px",
+  left: "-5%",
+  bottom: "20%",
   transform: "rotate(14deg)",
 };
 const pointToLogin = {
-  left: "-34px",
-  bottom: "-50px",
+  left: "-5%",
+  bottom: "-5%",
   transform: "rotate(-14deg)",
 };
 
@@ -24,9 +24,10 @@ function Home() {
     document.documentElement.style.setProperty("--color", color);
   };
 
-  const handleMouseOut = () => {
-    document.documentElement.style.setProperty("--color", "#001219");
-  };
+  // const handleMouseOut = () => {
+  //   document.documentElement.style.setProperty("--color", "#001219");
+  //   console.log("CUM");
+  // };
 
   return (
     <div className="home">
@@ -35,6 +36,11 @@ function Home() {
           style={{ fill: "var(--color)", ...pointerPos }}
           id="pointing-finger"
         />
+
+        <p id="q1">
+          “The most important quality for an investor is temperament, not
+          intellect.” - Warren Buffet
+        </p>
 
         <div id="title-div">
           <h1 className="title">CASINO </h1>
@@ -53,7 +59,7 @@ function Home() {
             onMouseOver={() => {
               handleMouseOver("#9b2226", pointToSignUp);
             }}
-            onMouseOut={() => handleMouseOut}
+            // onMouseOut={() => handleMouseOut()}
           >
             Sign Up
           </button>
@@ -66,7 +72,7 @@ function Home() {
             onMouseOver={() => {
               handleMouseOver("#264653", pointToLogin);
             }}
-            onMouseOut={() => handleMouseOut}
+            // onMouseOut={() => handleMouseOut()}
           >
             Log In
           </button>
