@@ -21,7 +21,7 @@ function Market() {
     <>
       <Navbar />
       <div>
-        <SearchBar onSelectResult={onSelectResult} />
+        <SearchBar />
         <div>
           {stock &&
             stock.map((cum: any, index: any) => (

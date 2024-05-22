@@ -4,7 +4,6 @@ export type SearchResult = {
     name: string;
   };
   refIndex: number;
-  score: number;
 };
 
 export type PortfolioItem = {

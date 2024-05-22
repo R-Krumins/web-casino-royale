@@ -1,12 +1,6 @@
 #home-page {
-  background: url(./assets/home-bg.jpg);
+  background: url(../assets/home-bg.jpg);
   height: 100vh;
-  --primary: white;
-  --accent1: #7cb9e8;
-  --lighter: #4b4d48;
-  --dark: #3d3e3b;
-  --darker: ##3d3e3b;
-  font-family: Arial, Helvetica, sans-serif;
   position: relative;
   overflow: hidden;
 }
@@ -65,25 +59,9 @@
   padding: 8px 18px 8px 18px;
 }
 
-/* #search-icon {
-
-} */
-
 #home-options button {
   border-radius: 20px;
   padding: 10px 24px 10px 24px;
-}
-
-#home-search {
-  border: none;
-  border-radius: 20px;
-  padding: 10px 20px 10px 20px;
-  background-color: var(--lighter);
-  color: var(--primary);
-}
-
-#home-search:focus {
-  outline: 1px var(--accent1) solid;
 }
 
 #home-login-btn {

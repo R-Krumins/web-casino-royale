@@ -2,8 +2,8 @@
 
 import React from "react";
 import CrownLogo from "../assets/crown.svg?react";
-import SearchIcon from "../assets/search.svg?react";
-import "../home.css";
+import "../css/home.css";
+import SearchBar from "../components/SearchBar";
 
 function Home() {
   return (
@@ -17,12 +17,7 @@ function Home() {
 
         <div id="top-bar">
           <div id="home-options">
-            <SearchIcon id="search-icon" />
-            <input
-              type="text"
-              id="home-search"
-              placeholder="search stock db..."
-            />
+            <SearchBar />
             <button id="home-login-btn">Log In</button>
             <button id="home-singup-btn">Sign Up</button>
           </div>

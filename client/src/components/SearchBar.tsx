@@ -1,42 +1,45 @@
+/// <reference types="vite-plugin-svgr/client" />
+
 import React, { useState } from "react";
 import { SearchResult } from "../types";
+import SearchIcon from "../assets/search.svg?react";
 
-type Props = {
-  onSelectResult: (result: SearchResult) => void;
+const noResults = {
+  item: {
+    symbol: "",
+    name: "No result",
+  },
+  refIndex: -1,
 };
 
-function SearchBar(props: Props) {
+function SearchBar() {
   const [searchResults, setSearchResults] = useState<SearchResult[]>();
-  const [isSearching, setIsSearching] = useState<boolean>(false);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    handleSearch(event.target.value);
-  };
 
   const handleSearch = async (query: string) => {
-    setIsSearching(true);
     const response = await fetch(`/api/stocks/search?q=${query}`);
     const json = await response.json();
 
     if (response.ok) {
-      setSearchResults(json.data);
+      setSearchResults(json.data.length === 0 ? [noResults] : json.data);
     }
-    setIsSearching(false);
   };
 
   return (
-    <div>
+    <div id="search-bar">
+      <SearchIcon id="search-icon" />
       <input
-        className="search-bar"
+        id="search-input"
         type="text"
-        placeholder="Search..."
-        onChange={handleChange}
+        placeholder="search stock db..."
+        onChange={(e) => handleSearch(e.target.value)}
+        onBlur={() => {
+          setSearchResults([]);
+        }}
       />
-      {isSearching && <p>Searching...</p>}
-      <ul>
+      <ul id="search-dropdown">
         {searchResults &&
           searchResults.map((sr, index) => (
-            <li key={index} onClick={() => props.onSelectResult(sr)}>
+            <li key={index}>
               <p>
                 <strong>{sr.item.symbol}</strong> {sr.item.name}
               </p>

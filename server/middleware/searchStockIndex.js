@@ -6,7 +6,7 @@ const RESULTS_COUNT = 5;
 
 // Set up options for fuzzy search
 const options = {
-  includeScore: true,
+  includeScore: false,
   keys: ["name"],
 };
 
