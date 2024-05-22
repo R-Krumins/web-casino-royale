@@ -4,8 +4,11 @@ import React from "react";
 import CrownLogo from "../assets/crown.svg?react";
 import "../css/home.css";
 import SearchBar from "../components/SearchBar";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
+
   return (
     <div id="home-page">
       <div id="bg-overlay"></div>
@@ -18,8 +21,12 @@ function Home() {
 
           <div id="home-options">
             <SearchBar />
-            <button id="home-login-btn">Log In</button>
-            <button id="home-singup-btn">Sign Up</button>
+            <button id="home-login-btn" onClick={() => navigate("/login")}>
+              Log In
+            </button>
+            <button id="home-singup-btn" onClick={() => navigate("/signup")}>
+              Sign Up
+            </button>
           </div>
         </div>
 

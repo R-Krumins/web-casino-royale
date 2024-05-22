@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSignup } from "../hooks/useSignup";
+import "../css/auth.css";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -15,9 +16,10 @@ function Login() {
   };
 
   return (
-    <div className="auth-container">
+    <div id="auth-container">
+      <img src="./src/assets/fearless-girl.jpg" alt="fearless-girl" />
       <form onSubmit={handleSumbit} className="auth-form signup">
-        <h2>Sign Up</h2>
+        <h1>Sign Up</h1>
         <label htmlFor="username">Username</label>
         <input
           type="text"
@@ -38,7 +40,9 @@ function Login() {
         />
         <div className="error password">{passwordError}</div>
         <button disabled={isLoading}>Sign Up</button>
-        <Link to="/login">or login</Link>
+        <Link id="redirect-link" to="/login">
+          or login
+        </Link>
       </form>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogin } from "../hooks/useLogin";
+import "../css/auth.css";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -15,7 +16,8 @@ function Login() {
   };
 
   return (
-    <div className="auth-container">
+    <div id="auth-container">
+      <img src="./src/assets/bull.jpg" alt="bull" />
       <form onSubmit={handleSumbit} className="auth-form signup">
         <h2>Login</h2>
 
