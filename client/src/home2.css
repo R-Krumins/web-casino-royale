@@ -79,13 +79,26 @@ body {
   margin-right: auto;
 }
 
+#auth-options {
+  margin-left: auto;
+  margin-right: auto;
+
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+
+  font-size: min(200%, 40px);
+}
+
 #auth-options button {
   background-color: transparent;
   border: 3px solid var(--color);
-  font-size: 3.5rem;
+
   padding: 1rem;
 
-  width: 16vw;
+  width: 160%;
+
+  font-size: min(400%, 40px);
 
   /* color */
   color: var(--color);
@@ -97,7 +110,7 @@ body {
 
 #auth-options {
   position: absolute;
-  left: 32%;
+  left: 28%;
   bottom: 25%;
 }
 
