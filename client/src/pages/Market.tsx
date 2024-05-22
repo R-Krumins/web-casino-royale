@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import SearchBar from "../components/SearchBar";
 import { SearchResult } from "../types";
 import { json } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 function Market() {
   const [stock, setStock] = useState<object[]>();
@@ -18,14 +19,17 @@ function Market() {
 
   return (
     <>
-      <SearchBar onSelectResult={onSelectResult} />
+      <Navbar />
       <div>
-        {stock &&
-          stock.map((cum: any, index: any) => (
-            <p key={index}>
-              {cum["date"].split("T")[0] + " -> " + cum["open"]}
-            </p>
-          ))}
+        <SearchBar onSelectResult={onSelectResult} />
+        <div>
+          {stock &&
+            stock.map((cum: any, index: any) => (
+              <p key={index}>
+                {cum["date"].split("T")[0] + " -> " + cum["open"]}
+              </p>
+            ))}
+        </div>
       </div>
     </>
   );
