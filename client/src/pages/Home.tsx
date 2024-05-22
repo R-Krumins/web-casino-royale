@@ -10,12 +10,12 @@ function Home() {
     <div id="home-page">
       <div id="bg-overlay"></div>
       <div id="home-content">
-        <div id="title-div">
-          <CrownLogo id="crown-logo" />
-          <h1>Casino Royale</h1>
-        </div>
-
         <div id="top-bar">
+          <div id="title-div">
+            <CrownLogo id="crown-logo" />
+            <h1>Casino Royale</h1>
+          </div>
+
           <div id="home-options">
             <SearchBar />
             <button id="home-login-btn">Log In</button>
