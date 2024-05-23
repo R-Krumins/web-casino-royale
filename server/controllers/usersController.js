@@ -1,4 +1,6 @@
 const { User } = require("../models/userModel");
+const { Stock } = require("../models/stockModel");
+const { getStocks } = require("./stocksController");
 const log = require("../lib/logger")();
 
 async function getUser(req, res) {
@@ -15,16 +17,8 @@ async function getUser(req, res) {
 }
 
 async function portfolio_GET(req, res) {
-  try {
-    const resp = await User.findById(req.user._id);
-
-    if (resp) return res.status(200).json(resp.portfolio);
-
-    res.status(500).json({ error: "something went terribly wrong" });
-  } catch (error) {
-    log.error(error);
-    res.status(500).json({ error });
-  }
+  // user document was already retrieved in auth middleware
+  return res.status(200).json(req.user.portfolio);
 }
 
 // TODO: combine PATCH and POST into one functino for data integrity
@@ -80,9 +74,26 @@ async function portfolio_POST(req, res) {
   }
 }
 
+// Querry stocks collection with users portfolio items and date point
+// basicly get the data of alll users owned stocks on particular date
+async function portfolioItemsDatePoint_GET(req, res) {
+  const { date } = req.params;
+  const stocks = req.user.portfolio.map((i) => {
+    return { _id: i.id };
+  });
+
+  const resp = await Stock.find(
+    { $or: stocks, "data.date": date },
+    { "data.$": 1 }
+  );
+
+  return res.status(200).json(resp);
+}
+
 module.exports = {
   getUser,
   portfolio_PATCH,
   portfolio_POST,
   portfolio_GET,
+  portfolioItemsDatePoint_GET,
 };

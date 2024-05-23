@@ -5,7 +5,7 @@ import ItemListing from "../components/ItemListing";
 import "../css/portfolio.css";
 
 function Portfolio() {
-  const [portfolioItems, setPortfolioItem] = useState<PortfolioItem[]>([]);
+  const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
   const [value, setValue] = useState(0); //value of player's porftolio
   const socket = useSocketContext();
 
@@ -15,7 +15,7 @@ function Portfolio() {
       if (update.every((item) => item === null)) return;
 
       console.log(update);
-      setPortfolioItem(update);
+      setPortfolioItems(update);
 
       setValue(
         update.reduce((sum, item) => {
@@ -24,6 +24,21 @@ function Portfolio() {
       );
     });
   }, [socket]);
+
+  // do a inital fetch of users stocks
+  async function initalFetch() {
+    try {
+      const res = await fetch("/api/users/porfolio/date/2013-10-15");
+      const json = await res.json();
+      setPortfolioItems(json);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    initalFetch();
+  }, []);
   return (
     <>
       <div className="stats">

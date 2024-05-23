@@ -1,4 +1,5 @@
 const { Stock, StockDataPoint } = require("../models/stockModel");
+const log = require("../lib/logger")();
 
 async function findStock(req, res) {
   const q = req.query.q;
@@ -38,7 +39,38 @@ async function getStockBySymbol(req, res) {
   }
 }
 
+async function getStocks(req, res) {
+  const { stocks, date } = req.body;
+
+  //TODO: find or create a lib function for this checks
+  if (!stocks)
+    return res.status(400).json({ error: "stocks property required!" });
+  if (!date) return res.status(400).json({ error: "date property required!" });
+
+  if (!/^(\d\d\d\d-\d\d-\d\d)$/.test(date))
+    res.status(400).json({ error: "date format must be yyyy-MM-dd" });
+
+  const querry = stocks.map((q) => {
+    return { _id: q };
+  });
+
+  try {
+    const resp = await Stock.find(
+      { $or: querry, "data.date": date },
+      { "data.$": 1 }
+    );
+
+    if (resp) return res.status(200).json(resp);
+
+    return res.status(500).json({ error: "Fucky wucky UwU" });
+  } catch (error) {
+    log.error(error);
+    return res.status(500).json({ error });
+  }
+}
+
 module.exports = {
   findStock,
   getStockBySymbol,
+  getStocks,
 };
