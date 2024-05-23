@@ -39,9 +39,7 @@ function Login() {
         />
         <div className="error password">{passwordError}</div>
         <button disabled={isLoading}>Sign Up</button>
-        <Link id="redirect-link" to="/login">
-          or login
-        </Link>
+        <Link to="/login">or login</Link>
       </form>
     </div>
   );

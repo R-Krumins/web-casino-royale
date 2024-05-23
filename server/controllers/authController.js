@@ -56,7 +56,7 @@ module.exports.signupPost = async (req, res) => {
     const token = createToken(user._id);
     res.cookie("jwt", token, { httpOnly: true, maxAge: MAX_TOKEN_AGE * 1000 });
     log.info(`New user created: ${username}`);
-    res.status(200).json({ username, userId: user._id });
+    res.status(200).json({ username, user: user._id });
   } catch (err) {
     const errors = handleSignupErrors(err);
     res.status(400).json({ errors });
