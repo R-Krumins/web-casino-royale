@@ -14,7 +14,16 @@
   border: none;
 }
 
-#time-control button svg {
+#time-control svg.inactive {
   fill: var(--primary);
+  width: 2.5rem;
+}
+
+#time-control svg:hover {
+  cursor: pointer;
+}
+
+#time-control svg.active {
+  fill: var(--accent1);
   width: 2.5rem;
 }

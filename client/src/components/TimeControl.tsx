@@ -12,6 +12,7 @@ function TimeControl() {
   const socket = useSocketContext();
 
   const handleChangeSimSpeed = (newSpeed: number) => {
+    if (newSpeed === simSpeed) return;
     socket.emit("change-speed", newSpeed);
     console.log("FUCK");
 
@@ -26,18 +27,16 @@ function TimeControl() {
   return (
     <div id="time-control">
       <h1>{date}</h1>
-      <button
+
+      <PauseIcon
         className={simSpeed === 0 ? "active" : "inactive"}
         onClick={() => handleChangeSimSpeed(0)}
-      >
-        <PauseIcon />
-      </button>
-      <button
+      />
+
+      <PlayIcon
         className={simSpeed === 1 ? "active" : "inactive"}
         onClick={() => handleChangeSimSpeed(1)}
-      >
-        <PlayIcon />
-      </button>
+      />
     </div>
   );
 }
