@@ -7,8 +7,8 @@ async function requireAuth(req, res, next) {
 
   if (token) {
     try {
-      const { _id } = jwt.verify(token, process.env.SECRET);
-      req.user = await User.findOne({ _id }).select("_id");
+      const { id } = jwt.verify(token, process.env.SECRET);
+      req.user = await User.findOne({ _id: id });
       next();
       return;
     } catch (err) {
