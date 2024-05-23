@@ -46,7 +46,7 @@ function Portfolio() {
         <h3>Value: ${value.toFixed(2)}</h3>
         <h3>Liquidity: $0</h3>
       </div>
-      <ul className="portfolio-list">
+      <ul id="portfolio-list">
         {portfolioItems?.map((item, index) => (
           <ItemListing
             key={index}
