@@ -4,8 +4,8 @@ const { format, addDays } = require("date-fns");
 const log = require("../lib/logger")();
 
 module.exports = (io, socket) => {
-  async function getPorfolio(userName, date) {
-    const user = await User.findOne({ username: userName });
+  async function getPorfolio(username, date) {
+    const user = await User.findOne({ username });
 
     const update = await Promise.all(
       user.portfolio.map(async (item) => {
@@ -20,7 +20,7 @@ module.exports = (io, socket) => {
   }
 
   function init() {
-    const name = "Bobby";
+    const name = "admin";
     let simDate = new Date("2017-01-01");
     let simSpeed = 0;
 
@@ -28,7 +28,7 @@ module.exports = (io, socket) => {
 
     setInterval(() => {
       if (simSpeed === 0) return;
-      getPorfolio("Bobby", format(simDate, "yyyy-MM-dd"));
+      getPorfolio(name, format(simDate, "yyyy-MM-dd"));
       simDate = addDays(simDate, 1);
     }, 1000);
 
@@ -38,5 +38,5 @@ module.exports = (io, socket) => {
     });
   }
 
-  socket.on("init", init);
+  init();
 };

@@ -1,15 +1,18 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import { Outlet } from "react-router-dom";
+import { SocketContextProvider } from "../context/SocketContext";
 
 function Play() {
   return (
-    <div id="play-container">
-      <Navbar />
-      <div id="subpage-container">
-        <Outlet />
+    <SocketContextProvider>
+      <div id="play-container">
+        <Navbar />
+        <div id="subpage-container">
+          <Outlet />
+        </div>
       </div>
-    </div>
+    </SocketContextProvider>
   );
 }
 

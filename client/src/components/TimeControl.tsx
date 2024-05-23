@@ -1,7 +1,7 @@
 /// <reference types="vite-plugin-svgr/client" />
 
 import React, { useEffect, useState } from "react";
-import { useSocketContext } from "../context";
+import { useSocketContext } from "../hooks/useSocketContext";
 import "../css/timeControl.css";
 import PauseIcon from "../assets/pause-circle.svg?react";
 import PlayIcon from "../assets/play-circle.svg?react";
@@ -13,6 +13,8 @@ function TimeControl() {
 
   const handleChangeSimSpeed = (newSpeed: number) => {
     socket.emit("change-speed", newSpeed);
+    console.log("FUCK");
+
     setSimSpeed(newSpeed);
   };
 

@@ -7,7 +7,6 @@ import LogoutIcon from "../assets/logout.svg?react";
 import TimeControl from "./TimeControl";
 import WebsiteTitle from "./WebsiteTitle";
 import "../css/navbar.css";
-import { useState } from "react";
 
 function Navbar() {
   const { logout } = useLogout();

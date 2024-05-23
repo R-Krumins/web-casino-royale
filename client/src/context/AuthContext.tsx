@@ -1,10 +1,12 @@
 import { createContext, useEffect, useReducer } from "react";
+import { connectSocket } from "./SocketContext";
 
 export const AuthContext = createContext<any | null>(null);
 
 export const authReducer = (state: any, action: any) => {
   switch (action.type) {
     case "LOGIN":
+      connectSocket();
       return { user: action.payload };
     case "LOGOUT":
       return { user: null };

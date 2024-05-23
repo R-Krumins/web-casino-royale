@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useSocketContext } from "../context";
+import { useEffect, useState } from "react";
+import { useSocketContext } from "../hooks/useSocketContext";
 import { PortfolioItem } from "../types";
 import ItemListing from "../components/ItemListing";
-import Navbar from "../components/Navbar";
 import "../css/portfolio.css";
 
 function Portfolio() {
