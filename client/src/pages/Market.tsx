@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import SearchBar from "../components/SearchBar";
 import { SearchResult } from "../types";
-import { json } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import "../css/market.css";
 
 function Market() {
   const [stock, setStock] = useState<object[]>();
@@ -19,18 +18,12 @@ function Market() {
 
   return (
     <>
-      <Navbar />
-      <div>
+      <h1>Market</h1>
+      <div id="market-search-div">
         <SearchBar />
-        <div>
-          {stock &&
-            stock.map((cum: any, index: any) => (
-              <p key={index}>
-                {cum["date"].split("T")[0] + " -> " + cum["open"]}
-              </p>
-            ))}
-        </div>
       </div>
+
+      <div id="market-search-results"></div>
     </>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSignup } from "../hooks/useSignup";
 import "../css/auth.css";
 
@@ -7,7 +7,6 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { signup, isLoading, usernameError, passwordError } = useSignup();
-  const navigate = useNavigate();
 
   const handleSumbit = async (e: any) => {
     e.preventDefault();

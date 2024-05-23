@@ -1,0 +1,20 @@
+#time-control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+
+  background-color: var(--darker);
+  border-radius: 20px;
+  padding: 8px 18px 8px 18px;
+}
+
+#time-control button {
+  background-color: transparent;
+  border: none;
+}
+
+#time-control button svg {
+  fill: var(--primary);
+  width: 2.5rem;
+}

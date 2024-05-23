@@ -1,10 +1,7 @@
-/// <reference types="vite-plugin-svgr/client" />
-
-import React from "react";
-import CrownLogo from "../assets/crown.svg?react";
-import "../css/home.css";
-import SearchBar from "../components/SearchBar";
 import { useNavigate } from "react-router-dom";
+import SearchBar from "../components/SearchBar";
+import WebsiteTitle from "../components/WebsiteTitle";
+import "../css/home.css";
 
 function Home() {
   const navigate = useNavigate();
@@ -14,10 +11,7 @@ function Home() {
       <div id="bg-overlay"></div>
       <div id="home-content">
         <div id="top-bar">
-          <div id="title-div">
-            <CrownLogo id="crown-logo" />
-            <h1>Casino Royale</h1>
-          </div>
+          <WebsiteTitle />
 
           <div id="home-options">
             <SearchBar />

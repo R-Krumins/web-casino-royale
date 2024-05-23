@@ -1,0 +1,14 @@
+#market-search-div {
+  width: 16rem;
+  height: 4rem;
+}
+
+#market-search-div #search-input {
+  border: 1px var(--primary) solid;
+}
+
+#market-search-results {
+  background-color: var(--darker);
+  border-radius: 70px;
+  height: 85%;
+}

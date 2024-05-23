@@ -1,0 +1,33 @@
+#search-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+#search-input {
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px 10px 20px;
+  background-color: var(--lighter);
+  color: var(--primary);
+}
+
+#search-dropdown {
+  margin-top: 5px;
+  list-style-type: none;
+  background-color: var(--darker);
+
+  position: absolute;
+  left: 0;
+  top: 130%;
+  width: 100%;
+
+  transition: height 1s ease;
+}
+
+#search-dropdown li {
+  color: var(--primary);
+  float: left;
+  position: relative;
+}

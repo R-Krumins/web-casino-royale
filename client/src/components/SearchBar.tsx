@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { SearchResult } from "../types";
 import SearchIcon from "../assets/search.svg?react";
+import "../css/searchbar.css";
 
 const noResults = {
   item: {

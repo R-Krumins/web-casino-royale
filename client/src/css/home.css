@@ -28,18 +28,14 @@
   flex-wrap: wrap;
 }
 
-#title-div {
+#website-title {
   position: absolute;
   top: -60px;
   left: 2rem;
-  color: var(--primary);
-  display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
 }
 
 @media only screen and (max-width: 1350px) {
-  #title-div {
+  #website-title {
     position: static;
   }
 
@@ -48,9 +44,9 @@
   }
 }
 
-#title-div h1 {
+/* #website-title h1 {
   font-size: 3rem;
-}
+} */
 
 #crown-logo {
   fill: var(--primary);
