@@ -44,6 +44,7 @@ function SearchBar() {
               <p>
                 <strong>{sr.item.symbol}</strong> {sr.item.name}
               </p>
+              <hr />
             </li>
           ))}
       </ul>

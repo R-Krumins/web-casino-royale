@@ -15,8 +15,12 @@
 
 #search-dropdown {
   margin-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
   list-style-type: none;
+  border-radius: 16px;
   background-color: var(--darker);
+  opacity: 0.7;
 
   position: absolute;
   left: 0;
@@ -30,4 +34,19 @@
   color: var(--primary);
   float: left;
   position: relative;
+  width: 100%;
+}
+
+#search-dropdown li:hover {
+  cursor: pointer;
+}
+
+#search-dropdown li p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#search-dropdown li p strong {
+  color: var(--accent1);
 }
