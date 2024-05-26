@@ -7,8 +7,26 @@
   border: 1px var(--primary) solid;
 }
 
-#market-search-results {
-  background-color: var(--darker);
-  border-radius: 70px;
-  height: 85%;
+#market-stock-info #top-div  {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
+
+#market-stock-info h1{
+  margin-bottom: 0;
+}
+
+
+#market-stock-info p {
+  margin-top: 2px;
+}
+
+#market-stock-desc {
+  margin-bottom: 60px;
+  width: 50%;
+}
+
+
+

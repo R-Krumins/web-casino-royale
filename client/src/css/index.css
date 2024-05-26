@@ -36,7 +36,8 @@ input:focus {
   border-radius: 70px;
   padding: 70px;
   margin: 4rem 8rem 2rem 8rem;
-  height: 80vh;
+  min-height: 100vh;
+  height: auto
 }
 
 #website-title a {
@@ -50,3 +51,23 @@ input:focus {
 #website-title a h1 {
   font-size: 3rem;
 }
+
+button {
+  background-color: transparent;
+  color: var(--primary);
+  border: 1px var(--primary) solid;
+  border-radius: 18px;
+  padding: 12px 8px 12px 8px;
+}
+
+button:hover {
+  color: var(--accent1);
+  border: 1px var(--accent1) solid;
+  cursor: pointer;
+}
+
+button:active {
+  background-color: var(--accent1);
+  color: var(--primary);
+}
+
