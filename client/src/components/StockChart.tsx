@@ -3,6 +3,17 @@ import CanvasJSReact from "@canvasjs/react-stockcharts";
 
 const CanvasJSStockChart = CanvasJSReact.CanvasJSStockChart;
 
+// moved index.cs :root variables here
+// because canvasJS is an entitled prick
+const style = {
+  primary: "white",
+  accent1: "#7cb9e8",
+  lighter: "#4b4d48",
+  dark: "#3d3e3b",
+  darker: "#373835",
+  fontFamily: "Arial"
+}
+
 type Props = {
     symbol: string
     fromDate: string;
@@ -46,7 +57,7 @@ function StockChart({symbol, fromDate, toDate}: Props) {
     
     // options for chart - formating and data
     const options = {
-        theme: "dark2",
+      backgroundColor: style.lighter,
         charts: [
           {
             axisX: {
@@ -60,6 +71,7 @@ function StockChart({symbol, fromDate, toDate}: Props) {
             axisY: {
               prefix: "$",
               tickLength: 0,
+              labelFontColor: style.primary
             },
             data: [
               {
@@ -75,12 +87,32 @@ function StockChart({symbol, fromDate, toDate}: Props) {
           data: [
             {
               dataPoints: data.short,
+              color: style.accent1
             },
           ],
           slider: {
             minimum: new Date(fromDate),
             maximum: new Date(toDate),
           },
+          backgroundColor: style.lighter,
+
+        },
+
+        rangeSelector: {   
+          buttonStyle: {
+            backgroundColor: style.lighter,
+            labelFontColor: style.primary,
+            borderColor: style.primary,
+            spacing: 10
+          },
+
+          inputFields: {
+            style: {
+              backgroundColor: style.lighter,
+              borderColor: style.primary,
+              fontColor: style.primary
+          },
+        }
         },
     };
 
