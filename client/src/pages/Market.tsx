@@ -2,28 +2,27 @@ import { useState } from "react";
 import SearchBar from "../components/SearchBar";
 import { SearchResult } from "../types";
 import "../css/market.css";
+import StockChart from "../components/StockChart";
 
 function Market() {
-  const [stock, setStock] = useState<object[]>();
+  const [selectedStock, setSelectedStock] = useState("");
 
-  const onSelectResult = async (result: SearchResult) => {
-    try {
-      const response = await fetch(`/api/stocks/${result.item.symbol}`);
-      const data = await response.json();
-      setStock(data["data"]);
-    } catch (error) {
-      console.error("Error searching:", error);
-    }
+  const handleResultSelected = async (result: string) => {
+    console.log(result);
+    
+    setSelectedStock(result)
   };
 
   return (
     <>
       <h1>Market</h1>
+      
       <div id="market-search-div">
-        <SearchBar />
+        <SearchBar onResultSelected={handleResultSelected}/>
       </div>
 
-      <div id="market-search-results"></div>
+      <hr />
+      <StockChart symbol={selectedStock} fromDate="2018-01-1" toDate="2020-12-30"/>
     </>
   );
 }

@@ -13,7 +13,11 @@ const noResults = {
   refIndex: -1,
 };
 
-function SearchBar() {
+type Props = {
+  onResultSelected: (result: string) => {};
+}
+
+function SearchBar(props: Props) {
   const [searchResults, setSearchResults] = useState<SearchResult[]>();
 
   const handleSearch = async (query: string) => {
@@ -40,7 +44,9 @@ function SearchBar() {
       <ul id="search-dropdown">
         {searchResults &&
           searchResults.map((sr, index) => (
-            <li key={index}>
+            <li key={index} 
+                onMouseDown={() => props.onResultSelected(sr.item.symbol)}
+              >
               <p>
                 <strong>{sr.item.symbol}</strong> {sr.item.name}
               </p>
