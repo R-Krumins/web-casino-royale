@@ -15,27 +15,29 @@ async function findStock(req, res) {
 }
 
 async function getStockBySymbol(req, res) {
-  const date = req.query.date;
   const id = req.params.id;
+  const { from, to } = req.query;
 
-  let stock = undefined;
+  // check if dates valid
+  fromD = new Date(from);
+  toD = new Date(to);
 
-  if (date) {
-    stock = await Stock.findOne(
-      {
-        _id: id,
-        "data.date": date,
-      },
-      { "data.$": 1 }
-    );
-  } else {
-    stock = await Stock.findOne({ _id: id });
-  }
+  if (isNaN(fromD) || isNaN(toD))
+    return res.status(400).json({ error: "Invalid dates" });
+  if (fromD > toD)
+    return res.status(400).json({ error: "From date is larger than to" });
 
-  if (stock) {
-    res.status(200).json(stock);
-  } else {
-    res.status(404).json({ message: "Stock not found" });
+  try {
+    const data = await Stock.aggregate([
+      { $match: { _id: id } },
+      { $unwind: "$data" },
+      { $match: { "data.date": { $gte: from, $lte: to } } },
+      { $group: { _id: "$_id", data: { $push: "$data" } } },
+    ]);
+
+    return res.status(200).json({ data });
+  } catch (error) {
+    return res.status(500).json({ error: "Server error" });
   }
 }
 
