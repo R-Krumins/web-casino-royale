@@ -18,6 +18,8 @@ async function getStockBySymbol(req, res) {
   const id = req.params.id;
   const { from, to } = req.query;
 
+  console.log(id, from, to);
+
   // check if dates valid
   fromD = new Date(from);
   toD = new Date(to);
@@ -28,15 +30,16 @@ async function getStockBySymbol(req, res) {
     return res.status(400).json({ error: "From date is larger than to" });
 
   try {
-    const data = await Stock.aggregate([
+    const result = await Stock.aggregate([
       { $match: { _id: id } },
       { $unwind: "$data" },
       { $match: { "data.date": { $gte: from, $lte: to } } },
       { $group: { _id: "$_id", data: { $push: "$data" } } },
     ]);
 
-    return res.status(200).json({ data });
+    return res.status(200).json({ data: result[0].data });
   } catch (error) {
+    log.error(error);
     return res.status(500).json({ error: "Server error" });
   }
 }
