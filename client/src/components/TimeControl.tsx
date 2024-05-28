@@ -1,6 +1,6 @@
 /// <reference types="vite-plugin-svgr/client" />
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSocketContext } from "../hooks/useSocketContext";
 import "../css/timeControl.css";
 import PauseIcon from "../assets/pause-circle.svg?react";

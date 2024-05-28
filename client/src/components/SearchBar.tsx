@@ -1,6 +1,6 @@
 /// <reference types="vite-plugin-svgr/client" />
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { SearchResult } from "../types";
 import SearchIcon from "../assets/search.svg?react";
 import "../css/searchbar.css";
@@ -15,7 +15,7 @@ const noResults = {
 
 type Props = {
   onResultSelected: (result: string) => {};
-}
+};
 
 function SearchBar(props: Props) {
   const [searchResults, setSearchResults] = useState<SearchResult[]>();
@@ -44,9 +44,10 @@ function SearchBar(props: Props) {
       <ul id="search-dropdown">
         {searchResults &&
           searchResults.map((sr, index) => (
-            <li key={index} 
-                onMouseDown={() => props.onResultSelected(sr.item.symbol)}
-              >
+            <li
+              key={index}
+              onMouseDown={() => props.onResultSelected(sr.item.symbol)}
+            >
               <p>
                 <strong>{sr.item.symbol}</strong> {sr.item.name}
               </p>

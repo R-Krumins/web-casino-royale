@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CanvasJSReact from "@canvasjs/react-stockcharts";
 
 const CanvasJSStockChart = CanvasJSReact.CanvasJSStockChart;
@@ -11,117 +11,103 @@ const style = {
   lighter: "#4b4d48",
   dark: "#3d3e3b",
   darker: "#373835",
-  fontFamily: "Arial"
-}
-
-type Props = {
-    symbol: string
-    fromDate: string;
-    toDate: string;
+  fontFamily: "Arial",
 };
 
-function StockChart({symbol, fromDate, toDate}: Props) {
-  // IMPORTANT: right now chart is set to "area" type, but
-  // data is configured for "candlestick" type
-  // when a final decision is made on chart type,
-  // data refactor is needed - "area" type only needs
-  // short data for both chart parts
-  const [data, setData] = useState({short: null, full: null})
+type Props = {
+  symbol: string;
+  fromDate: string;
+  toDate: string;
+};
 
-    useEffect(() => {
-      if(symbol === "") return;
-      fetchData()
-    }, [symbol]);
+function StockChart({ symbol, fromDate, toDate }: Props) {
+  const [data, setData] = useState<any[] | null>(null);
 
-    async function fetchData() {
-        const data = await fetch(`/api/stocks/${symbol}?from=${fromDate}&to=${toDate}`);
-        const json = await data.json();   
+  useEffect(() => {
+    if (symbol === "") return;
+    fetchData();
+  }, [symbol]);
 
-        const short: any = []; //for lower time scroll part
-        const full: any = []; //for candlestick part
-        
-        json.data.forEach((i:any) => {
-            const date  = new Date(i.date),
-                  open  = Number(i.open),
-                  low   = Number(i.low),
-                  high  = Number(i.high),
-                  close = Number(i.close)
-    
-            full.push({x: date, y: close});
-            short.push({x: date, y: close})
-        });
-    
-        setData({short, full})
-    }
-    
-    
-    // options for chart - formating and data
-    const options = {
-      backgroundColor: style.lighter,
-        charts: [
+  async function fetchData() {
+    const data = await fetch(
+      `/api/stocks/${symbol}?from=${fromDate}&to=${toDate}`
+    );
+    const json = await data.json();
+
+    const procData = json.data.map((x: any) => {
+      return {
+        x: new Date(x.date),
+        y: Number(x.close),
+      };
+    });
+    setData(procData);
+  }
+
+  // options for chart - formating and data
+  const options = {
+    backgroundColor: style.lighter,
+    charts: [
+      {
+        axisX: {
+          lineThickness: 5,
+          tickLength: 0,
+          labelFormatter: function () {
+            return "";
+          },
+          crosshair: { enabled: true, snapToDataPoint: true },
+        },
+        axisY: {
+          prefix: "$",
+          tickLength: 0,
+          labelFontColor: style.primary,
+        },
+        data: [
           {
-            axisX: {
-              lineThickness: 5,
-              tickLength: 0,
-              labelFormatter: function (e: any) {
-                return "";
-              },
-              crosshair: { enabled: true, snapToDataPoint: true},
-            },
-            axisY: {
-              prefix: "$",
-              tickLength: 0,
-              labelFontColor: style.primary
-            },
-            data: [
-              {
-                name: "Price (in USD)",
-                yValueFormatString: "$#,###.##",
-                type: "area",
-                dataPoints: data.full,
-              },
-            ],
+            name: "Price (in USD)",
+            yValueFormatString: "$#,###.##",
+            type: "area",
+            dataPoints: data,
           },
         ],
-        navigator: {
-          data: [
-            {
-              dataPoints: data.short,
-              color: style.accent1
-            },
-          ],
-          slider: {
-            minimum: new Date(fromDate),
-            maximum: new Date(toDate),
-          },
+      },
+    ],
+    navigator: {
+      data: [
+        {
+          dataPoints: data,
+          color: style.accent1,
+        },
+      ],
+      slider: {
+        minimum: new Date(fromDate),
+        maximum: new Date(toDate),
+      },
+      backgroundColor: style.lighter,
+    },
+
+    rangeSelector: {
+      buttonStyle: {
+        backgroundColor: style.lighter,
+        labelFontColor: style.primary,
+        borderColor: style.primary,
+        spacing: 10,
+      },
+
+      inputFields: {
+        style: {
           backgroundColor: style.lighter,
-
+          borderColor: style.primary,
+          fontColor: style.primary,
         },
+      },
+    },
+  };
 
-        rangeSelector: {   
-          buttonStyle: {
-            backgroundColor: style.lighter,
-            labelFontColor: style.primary,
-            borderColor: style.primary,
-            spacing: 10
-          },
-
-          inputFields: {
-            style: {
-              backgroundColor: style.lighter,
-              borderColor: style.primary,
-              fontColor: style.primary
-          },
-        }
-        },
-    };
-
-
-    return (
-        data
-            ? <CanvasJSStockChart options={options} />
-            : <p>Loading chart...</p>      
-    )
+  return data ? (
+    <CanvasJSStockChart options={options} />
+  ) : (
+    <p>Loading chart...</p>
+  );
 }
 
 export default StockChart;
