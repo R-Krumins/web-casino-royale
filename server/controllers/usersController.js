@@ -2,6 +2,7 @@ const { User } = require("../models/userModel");
 const { Stock } = require("../models/stockModel");
 const { getStocks } = require("./stocksController");
 const log = require("../lib/logger")();
+const { validationResult } = require("express-validator")
 
 async function getUser(req, res) {
   const { username } = req.params;
@@ -21,61 +22,37 @@ async function portfolio_GET(req, res) {
   return res.status(200).json(req.user.portfolio);
 }
 
-// TODO: combine PATCH and POST into one functino for data integrity
-
-async function portfolio_PATCH(req, res) {
-  const _id = req.user._id;
-  const { id, amount } = req.query;
-
-  if (!id) return res.status(400).send({ error: "id required" });
-  if (!amount) return res.status(400).send({ error: "amount required" });
-
-  const filter = { _id, "portfolio.id": id };
-  const update = { $set: { "portfolio.$.amount": amount } };
-  const options = { new: true };
-
-  try {
-    const resp = await User.findOneAndUpdate(filter, update, options);
-
-    if (resp) return res.status(200).json(resp.portfolio);
-
-    return res.status(400).json({
-      error:
-        "Failure on patch. Maybe the item does not exist in the user's portfolio?",
-    });
-  } catch (error) {
-    log.error(error);
-    res.status(500).json({ error });
-  }
-}
-
+// request to update an item in users portfolio array
+// OR push new, if the item does not already exist
 async function portfolio_POST(req, res) {
-  const _id = req.user._id;
+  
+  const vr = validationResult(req);
+  if(!vr.isEmpty()) return res.status(400).json({ error: vr.array()});
+  
+  const user = req.user;
   const { id, amount } = req.query;
 
-  if (!id) return res.status(400).send({ error: "id required" });
-  if (!amount) return res.status(400).send({ error: "amount required" });
+  const itemExists = user.portfolio.some(x => x.id === id);
 
-  const filter = { _id };
-  const update = { $push: { portfolio: { id, amount } } };
-  const options = { new: true };
+  const options = {new: true};
 
   try {
-    const resp = await User.findOneAndUpdate(filter, update, options);
+    const result = itemExists
+      ? await User.findOneAndUpdate({_id: user._id, "portfolio.id": id}, {$set: {"portfolio.$.amount": amount}}, options)
+      : await User.findOneAndUpdate({_id: user._id}, {$push: {portfolio: {id, amount}}}, options);
 
-    if (resp) return res.status(200).json(resp.portfolio);
-
-    return res.status(400).json({
-      error: "Failure to push.",
-    });
+      console.log(result);
+      return res.status(200).json(
+        {msg: itemExists ? "Updated portfolio item" : "Inserted new portfolio item",
+        portfolio: result.portfolio
+      });
   } catch (error) {
-    log.error(error);
-    res.status(500).json({ error });
-  }
+    log.error(error)
+    res.status(200).json({error});
+  }  
 }
 
-// Querry stocks collection with users portfolio items and date point
-// basicly get the data of alll users owned stocks on particular date
+// gets the data of alll users owned stocks on particular date
 async function portfolioItemsDatePoint_GET(req, res) {
   const { date } = req.params;
   const stocks = req.user.portfolio.map((i) => {
@@ -92,8 +69,7 @@ async function portfolioItemsDatePoint_GET(req, res) {
 
 module.exports = {
   getUser,
-  portfolio_PATCH,
-  portfolio_POST,
   portfolio_GET,
   portfolioItemsDatePoint_GET,
+  portfolio_POST
 };
