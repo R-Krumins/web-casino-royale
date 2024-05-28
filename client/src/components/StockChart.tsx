@@ -35,8 +35,8 @@ function StockChart({symbol, fromDate, toDate}: Props) {
 
     async function fetchData() {
         const data = await fetch(`/api/stocks/${symbol}?from=${fromDate}&to=${toDate}`);
-        const json = await data.json();
-    
+        const json = await data.json();   
+
         const short: any = []; //for lower time scroll part
         const full: any = []; //for candlestick part
         

@@ -1,0 +1,35 @@
+.order-popup-container {
+  background-color: var(--dark);
+  padding: 2rem 4rem 2rem 4rem;
+  border: 1px var(--primary) solid;
+  border-radius: 40px;
+  position: relative;
+}
+
+.order-popup-container input {
+  background-color: transparent;
+  border: 1px var(--primary solid);
+  border-radius: 10px;
+  color: var(--pimary);
+  padding: 4px 8px 4px 8px;
+  margin-right: 20px;
+}
+
+.order-btn {
+  padding: 4px 8px 4px 8px;
+  font-size: 1.5rem;
+  color: var(--accent1);
+  border-color: var(--accent1);
+}
+
+.order-btn:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.close-btn {
+  position: absolute;
+  right: 18px;
+  top: 12px;
+  padding: 6px;
+}

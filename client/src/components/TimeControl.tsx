@@ -14,8 +14,6 @@ function TimeControl() {
   const handleChangeSimSpeed = (newSpeed: number) => {
     if (newSpeed === simSpeed) return;
     socket.emit("change-speed", newSpeed);
-    console.log("FUCK");
-
     setSimSpeed(newSpeed);
   };
 
