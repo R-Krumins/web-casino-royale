@@ -1,6 +1,6 @@
 const exprss = require("express");
 const userRouter = exprss.Router();
-const { param, query } = require("express-validator")
+const { param, query } = require("express-validator");
 const requireAuth = require("../middleware/requireAuth");
 const {
   getUser,
@@ -11,11 +11,21 @@ const {
 
 userRouter.use(requireAuth);
 
-userRouter.route("/portfolio").post(
-  query("id", "Required").notEmpty().bail().isAlpha().withMessage("Letters only"),
-  query("amount", "Required").notEmpty().bail().isInt().withMessage("Must be Int"),
-  portfolio_POST
-);
+userRouter
+  .route("/portfolio/add")
+  .post(
+    query("id", "Required")
+      .notEmpty()
+      .bail()
+      .isAlpha()
+      .withMessage("Letters only"),
+    query("amount", "Required")
+      .notEmpty()
+      .bail()
+      .isInt()
+      .withMessage("Must be Int"),
+    portfolio_POST
+  );
 
 userRouter.route("/portfolio").get(portfolio_GET);
 

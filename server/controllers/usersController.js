@@ -2,7 +2,7 @@ const { User } = require("../models/userModel");
 const { Stock } = require("../models/stockModel");
 const { getStocks } = require("./stocksController");
 const log = require("../lib/logger")();
-const { validationResult } = require("express-validator")
+const { validationResult } = require("express-validator");
 
 async function getUser(req, res) {
   const { username } = req.params;
@@ -22,34 +22,78 @@ async function portfolio_GET(req, res) {
   return res.status(200).json(req.user.portfolio);
 }
 
-// request to update an item in users portfolio array
-// OR push new, if the item does not already exist
+// if item exists in user portfolio, add to amount
+// if tiem does not exist, push the new item
 async function portfolio_POST(req, res) {
-  
   const vr = validationResult(req);
-  if(!vr.isEmpty()) return res.status(400).json({ error: vr.array()});
-  
+  if (!vr.isEmpty()) return res.status(400).json({ error: vr.array() });
+
   const user = req.user;
   const { id, amount } = req.query;
 
-  const itemExists = user.portfolio.some(x => x.id === id);
+  const item = user.portfolio.find((x) => x.id === id);
+  console.log("Foud item", item);
 
-  const options = {new: true};
+  let result;
+  if (item) {
+    const amountSummed = parseInt(item.amount) + parseInt(amount);
+    result = await portfolioUpdateExisting(id, amountSummed, user._id);
+  } else {
+    result = await porfolioInserNew(id, parseInt(amount), user._id);
+  }
 
+  console.log(result);
+
+  if (result.error) {
+    return res.status(400).json(result);
+  }
+  if (result.failure) {
+    log.error(result);
+    return res.status(500).json({ error: "Server kaput" });
+  }
+
+  return res.status(200).json(result);
+}
+
+async function portfolioUpdateExisting(id, amount, userID) {
   try {
-    const result = itemExists
-      ? await User.findOneAndUpdate({_id: user._id, "portfolio.id": id}, {$set: {"portfolio.$.amount": amount}}, options)
-      : await User.findOneAndUpdate({_id: user._id}, {$push: {portfolio: {id, amount}}}, options);
+    if (amount < 0)
+      return {
+        error: `Bad request. Editing ${id} bv requested amount would bring it to ${amount}`,
+      };
 
-      console.log(result);
-      return res.status(200).json(
-        {msg: itemExists ? "Updated portfolio item" : "Inserted new portfolio item",
-        portfolio: result.portfolio
-      });
+    if (amount === 0)
+      return await User.findOneAndUpdate(
+        { _id: userID },
+        { $pull: { portfolio: { id } } },
+        { new: true }
+      );
+
+    return await User.findOneAndUpdate(
+      { _id: userID, "portfolio.id": id },
+      { $set: { "portfolio.$.amount": amount } },
+      { new: true }
+    );
   } catch (error) {
-    log.error(error)
-    res.status(200).json({error});
-  }  
+    return { failure: error };
+  }
+}
+
+async function porfolioInserNew(id, amount, userID) {
+  try {
+    if (amount < 0)
+      return {
+        error: "Bad request. Cannot insert new item with negative amount.",
+      };
+
+    return await User.findOneAndUpdate(
+      { _id: userID },
+      { $push: { portfolio: { id, amount } } },
+      { new: true }
+    );
+  } catch (error) {
+    return { failure: error };
+  }
 }
 
 // gets the data of alll users owned stocks on particular date
@@ -71,5 +115,5 @@ module.exports = {
   getUser,
   portfolio_GET,
   portfolioItemsDatePoint_GET,
-  portfolio_POST
+  portfolio_POST,
 };
