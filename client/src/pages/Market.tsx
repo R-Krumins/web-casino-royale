@@ -5,12 +5,12 @@ import StockChart from "../components/StockChart";
 import Order from "../components/Order";
 
 function Market() {
-  const [selectedStock, setSelectedStock] = useState("");
+  const [symbol, setSymbol] = useState("");
+  const [name, setName] = useState("");
 
-  const handleResultSelected = async (result: string) => {
-    console.log(result);
-
-    setSelectedStock(result);
+  const handleResultSelected = async (symbol: string, name: string) => {
+    setSymbol(symbol);
+    setName(name);
   };
 
   return (
@@ -21,16 +21,15 @@ function Market() {
       </div>
       <hr />
 
-      {!selectedStock ? (
+      {!symbol ? (
         <p>No stock selected. Search the market to show info.</p>
       ) : (
         <>
           <div id="market-stock-info">
-            <p>{localStorage.getItem("user")}</p>
             <div id="top-div">
               <div>
-                <h1>Stock name</h1>
-                <p>STCK</p>
+                <h1>{name}</h1>
+                <p>{symbol}</p>
               </div>
               <Order type="Buy" />
               <Order type="Sell" />
@@ -42,7 +41,7 @@ function Market() {
             </p>
           </div>
           <StockChart
-            symbol={selectedStock}
+            symbol={symbol}
             fromDate="2018-01-1"
             toDate="2020-12-30"
           />

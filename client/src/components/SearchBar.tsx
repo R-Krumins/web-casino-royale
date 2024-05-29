@@ -14,7 +14,7 @@ const noResults = {
 };
 
 type Props = {
-  onResultSelected: (result: string) => void;
+  onResultSelected: (symbol: string, name: string) => void;
 };
 
 function SearchBar(props: Props) {
@@ -46,7 +46,9 @@ function SearchBar(props: Props) {
           searchResults.map((sr, index) => (
             <li
               key={index}
-              onMouseDown={() => props.onResultSelected(sr.item.symbol)}
+              onMouseDown={() =>
+                props.onResultSelected(sr.item.symbol, sr.item.name)
+              }
             >
               <p>
                 <strong>{sr.item.symbol}</strong> {sr.item.name}
