@@ -3,6 +3,7 @@ import TokenIcon from "../assets/poker-chip.svg?react";
 type Props = {
   item: string;
   price: string;
+  amount: number;
 };
 
 function ItemListing(props: Props) {
@@ -19,7 +20,7 @@ function ItemListing(props: Props) {
           </div>
 
           <p>
-            {"(x69)"}&#160;&#160;&#160;{"$" + props.price}
+            {`(x${props.amount})`}&#160;&#160;&#160;{"$" + props.price}
           </p>
         </div>
       </div>

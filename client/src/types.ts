@@ -7,14 +7,13 @@ export type SearchResult = {
 };
 
 export type PortfolioItem = {
-  _id: string;
-  data: Array<{
-    date: string;
-    open: number;
-    high: number;
-    low: number;
-    close: number;
-    adjclose: number;
-    volume: number;
-  }>;
+  id: string;
+  amount: number;
+  date: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  adjclose: number;
+  volume: number;
 };

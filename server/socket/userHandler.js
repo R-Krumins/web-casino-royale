@@ -12,10 +12,14 @@ module.exports = (io, socket, user) => {
 
     const update = await Promise.all(
       portfolio.map(async (item) => {
-        return await Stock.findOne(
+        const retrieved = await Stock.findOne(
           { _id: item.id, "data.date": date },
-          { "data.$": 1 }
+          { "data.$": 1 },
+          { lean: true }
         );
+
+        if (!retrieved) return null;
+        return { ...item, ...retrieved.data[0] };
       })
     );
 

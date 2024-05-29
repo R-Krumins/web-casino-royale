@@ -3,10 +3,10 @@ const { Stock } = require("../models/stockModel");
 const { getStocks } = require("./stocksController");
 const log = require("../lib/logger")();
 const { validationResult } = require("express-validator");
+const { updatePortfolio } = require("../socket/portfolioCache");
 
 async function getUser(req, res) {
   const { username } = req.params;
-  console.log(username);
 
   const user = await User.findOne({ username });
 
@@ -32,7 +32,6 @@ async function portfolio_POST(req, res) {
   const { id, amount } = req.query;
 
   const item = user.portfolio.find((x) => x.id === id);
-  console.log("Foud item", item);
 
   let result;
   if (item) {
@@ -42,8 +41,6 @@ async function portfolio_POST(req, res) {
     result = await porfolioInserNew(id, parseInt(amount), user._id);
   }
 
-  console.log(result);
-
   if (result.error) {
     return res.status(400).json(result);
   }
@@ -52,7 +49,10 @@ async function portfolio_POST(req, res) {
     return res.status(500).json({ error: "Server kaput" });
   }
 
-  return res.status(200).json(result);
+  // TODO: the best way would to add mongoose middlewar for whenever
+  // user portfolio changes, but i don't know how to do it for a subdocument -_-
+  updatePortfolio(user._id, result.portfolio);
+  return res.status(200).json({ success: "Updated" });
 }
 
 async function portfolioUpdateExisting(id, amount, userID) {
@@ -103,10 +103,16 @@ async function portfolioItemsDatePoint_GET(req, res) {
     return { _id: i.id };
   });
 
-  const resp = await Stock.find(
+  let resp = await Stock.find(
     { $or: stocks, "data.date": date },
-    { "data.$": 1 }
+    { "data.$": 1 },
+    { lean: true }
   );
+
+  // this is potentially stupid but oh well
+  resp = resp.map((x) => {
+    return { id: x._id, amount: 0, ...x.data[0] };
+  });
 
   return res.status(200).json(resp);
 }

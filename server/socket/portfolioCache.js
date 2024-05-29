@@ -9,7 +9,11 @@ const cache = new Map();
 
 const registerNewUser = async (userID) => {
   try {
-    const resp = await User.findOne({ _id: userID }, { portfolio: 1 });
+    const resp = await User.findOne(
+      { _id: userID },
+      { portfolio: 1 },
+      { lean: true }
+    );
     cache.set(userID, resp.portfolio);
     log.debug(userID + " added to cache");
   } catch (error) {

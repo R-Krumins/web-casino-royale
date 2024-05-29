@@ -19,7 +19,7 @@ function Portfolio() {
 
       setValue(
         update.reduce((sum, item) => {
-          return sum + item.data[0].open;
+          return sum + item.close;
         }, 0)
       );
     });
@@ -50,8 +50,9 @@ function Portfolio() {
         {portfolioItems?.map((item, index) => (
           <ItemListing
             key={index}
-            item={item._id}
-            price={item.data[0].open.toFixed(2)}
+            item={item.id}
+            amount={item.amount}
+            price={item.close.toFixed(2)}
           />
         ))}
       </ul>
