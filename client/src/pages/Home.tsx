@@ -14,7 +14,7 @@ function Home() {
           <WebsiteTitle />
 
           <div id="home-options">
-            <SearchBar />
+            <SearchBar onResultSelected={() => {}} />
             <button id="home-login-btn" onClick={() => navigate("/login")}>
               Log In
             </button>

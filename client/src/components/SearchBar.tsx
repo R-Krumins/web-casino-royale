@@ -14,7 +14,7 @@ const noResults = {
 };
 
 type Props = {
-  onResultSelected: (result: string) => {};
+  onResultSelected: (result: string) => void;
 };
 
 function SearchBar(props: Props) {

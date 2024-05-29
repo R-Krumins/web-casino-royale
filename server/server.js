@@ -10,13 +10,18 @@ const mongoose = require("mongoose");
 const userHandler = require("./handlers/userHandler");
 const log = require("./lib/logger")();
 const cookieParser = require("cookie-parser");
+const path = require("path");
 
 //.env variables
 const PORT = process.env.PORT;
+const REACT_APP_PATH = process.env.REACT_APP_PATH;
 
 //server setup
 const app = express();
 app.use(cors());
+
+//index.html
+const indexHMTL = path.join(__dirname, "../dist/index.html");
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -30,11 +35,9 @@ const io = new Server(server, {
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.static("public"));
 
 //routing
-app.get("/", (req, res) => {
-  res.send("HEllO?!? UWU");
-});
 app.use("/api/stocks", stocksRouter);
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
