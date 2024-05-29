@@ -9,7 +9,7 @@ export const useLogout = () => {
     if (!respone.ok) {
       console.log("Could not clear auth cookie");
     }
-    localStorage.removeItem("user");
+    localStorage.clear();
 
     dispatch({ type: "LOGOUT" });
     console.log("LOGGED OUT");

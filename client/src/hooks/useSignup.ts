@@ -20,16 +20,15 @@ export const useSignup = () => {
       });
       const data = await res.json();
 
-      console.log(data);
-
       if (data.errors) {
         setIsLoading(false);
         setUsernameError(data.errors.username);
         setPasswordError(data.errors.password);
       }
 
-      if (data.user) {
-        localStorage.setItem("user", JSON.stringify(data));
+      if (data.username) {
+        localStorage.setItem("username", data.username);
+        localStorage.setItem("id", data.id);
         dispatch({ type: "LOGIN", payload: data });
         setIsLoading(false);
       }

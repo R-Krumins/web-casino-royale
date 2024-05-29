@@ -7,21 +7,17 @@ const authRouter = require("./routes/authRouter");
 const cors = require("cors");
 const { Server } = require("socket.io");
 const mongoose = require("mongoose");
-const userHandler = require("./handlers/userHandler");
+const userHandler = require("./socket/userHandler");
 const log = require("./lib/logger")();
 const cookieParser = require("cookie-parser");
 const path = require("path");
 
 //.env variables
 const PORT = process.env.PORT;
-const REACT_APP_PATH = process.env.REACT_APP_PATH;
 
 //server setup
 const app = express();
 app.use(cors());
-
-//index.html
-const indexHMTL = path.join(__dirname, "../dist/index.html");
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -45,7 +41,11 @@ app.use("/api/auth", authRouter);
 //scoket.io
 io.on("connection", (socket) => {
   log.info(`User Connected: ${socket.id}`);
-  userHandler(io, socket);
+
+  const user = socket.handshake.query;
+  if (user.id) {
+    userHandler(io, socket, user);
+  }
 });
 
 //attempt db connection and start server

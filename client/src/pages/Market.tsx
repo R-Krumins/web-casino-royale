@@ -26,6 +26,7 @@ function Market() {
       ) : (
         <>
           <div id="market-stock-info">
+            <p>{localStorage.getItem("user")}</p>
             <div id="top-div">
               <div>
                 <h1>Stock name</h1>

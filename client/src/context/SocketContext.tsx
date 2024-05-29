@@ -1,12 +1,23 @@
 import { createContext } from "react";
-import * as io from "socket.io-client";
+import io from "socket.io-client";
 
 export const SocketContext = createContext<io.Socket | undefined>(undefined);
 
 let socket: io.Socket | undefined = undefined;
 
-export const connectSocket = () => {
-  socket = io.connect("http://localhost:3000");
+type User = {
+  username: string;
+  id: string;
+};
+
+export const connectSocket = (user: User) => {
+  //TODO: fix connection URL
+  console.log("ASS");
+  console.log(user);
+
+  socket = io("http://localhost:3000", {
+    query: { username: user.username, id: user.id },
+  });
 };
 
 export const SocketContextProvider = ({ children }: any) => {

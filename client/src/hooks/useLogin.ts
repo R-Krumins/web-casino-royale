@@ -18,15 +18,14 @@ export const useLogin = () => {
       });
       const data = await res.json();
 
-      console.log(data);
-
       if (data.errors) {
         setIsLoading(false);
         setErrorMsg(data.errors.msg);
       }
 
-      if (data.user) {
-        localStorage.setItem("user", JSON.stringify(data));
+      if (data.username) {
+        localStorage.setItem("username", data.username);
+        localStorage.setItem("id", data.id);
         dispatch({ type: "LOGIN", payload: data });
         setIsLoading(false);
       }
