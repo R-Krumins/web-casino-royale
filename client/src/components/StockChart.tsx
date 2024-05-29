@@ -33,12 +33,11 @@ function StockChart({ symbol, fromDate, toDate }: Props) {
       `/api/stocks/${symbol}?from=${fromDate}&to=${toDate}`
     );
     const json = await data.json();
-    console.log(json);
 
     const procData = json.data.map((x: any) => {
       return {
         x: new Date(x.date),
-        y: Number(x.close),
+        y: x.close,
       };
     });
     setData(procData);
