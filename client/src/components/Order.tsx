@@ -4,14 +4,18 @@ import "../css/orderPopup.css";
 
 type Props = {
   type: "Buy" | "Sell";
+  stockSymbol: string;
 };
 
-function Order({ type }: Props) {
+function Order({ type, stockSymbol }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [count, setCount] = useState("");
+  const [responseMsg, setResponseMsg] = useState<string | null>(null);
+  const [btnIsDisabled, setBtnIsDisabled] = useState(false);
 
   const closeModal = () => {
     setCount("");
+    setResponseMsg(null);
     setIsOpen(false);
   };
 
@@ -23,22 +27,28 @@ function Order({ type }: Props) {
     if ((kc !== 8 && kc < 48) || kc > 57) e.preventDefault();
   };
 
-  const handleOrderPlaced = () => {
-    if (type === "Buy") handleBuy();
-    if (type === "Sell") handleSell();
-  };
+  const handleOrderPlaced = async () => {
+    setBtnIsDisabled(true);
+    setCount("");
+    const placedCount = type == "Buy" ? parseInt(count) : parseInt(count) * -1;
+    try {
+      const resp = await fetch(
+        `/api/users/portfolio/add?id=${stockSymbol}&amount=${placedCount}`,
+        { method: "POST" }
+      );
+      const json = await resp.json();
 
-  const handleBuy = () => {
-    console.log("Bought", count);
-  };
+      setResponseMsg(json.msg);
+    } catch (error) {
+      console.log(error);
+    }
 
-  const handleSell = () => {
-    console.log("Sold", count);
+    setBtnIsDisabled(false);
   };
 
   return (
     <div>
-      <button onClick={() => setIsOpen((o) => !o)}>Buy Order</button>
+      <button onClick={() => setIsOpen((o) => !o)}>{type} Order</button>
       <Popup open={isOpen} onClose={closeModal} modal>
         <div className="order-popup-container">
           <button className="close-btn" onClick={closeModal}>
@@ -46,7 +56,7 @@ function Order({ type }: Props) {
           </button>
           <h1>Place {type} Order</h1>
           <p>
-            <strong>For: </strong> STCK
+            <strong>For: </strong> {stockSymbol}
           </p>
           <p>
             <strong>Current Price</strong> $0
@@ -58,9 +68,14 @@ function Order({ type }: Props) {
             name="count"
             id=""
           />
-          <button className="order-btn" onClick={handleOrderPlaced}>
+          <button
+            className="order-btn"
+            onClick={handleOrderPlaced}
+            disabled={btnIsDisabled}
+          >
             {type}
           </button>
+          {responseMsg && <p>{responseMsg}</p>}
         </div>
       </Popup>
     </div>

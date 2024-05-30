@@ -31,8 +31,8 @@ function Market() {
                 <h1>{name}</h1>
                 <p>{symbol}</p>
               </div>
-              <Order type="Buy" />
-              <Order type="Sell" />
+              <Order type="Buy" stockSymbol={symbol} />
+              <Order type="Sell" stockSymbol={symbol} />
             </div>
             <p id="market-stock-desc">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis
@@ -42,7 +42,7 @@ function Market() {
           </div>
           <StockChart
             symbol={symbol}
-            fromDate="2018-01-1"
+            fromDate="1990-01-01"
             toDate="2020-12-30"
           />
         </>

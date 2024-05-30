@@ -14,7 +14,7 @@ function Portfolio() {
       const update: PortfolioItem[] = data.update;
       if (update.every((item) => item === null)) return;
 
-      console.log(update);
+      //console.log(update);
       setPortfolioItems(update);
 
       setValue(

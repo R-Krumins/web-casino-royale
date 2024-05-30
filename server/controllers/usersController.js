@@ -41,41 +41,48 @@ async function portfolio_POST(req, res) {
     result = await porfolioInserNew(id, parseInt(amount), user._id);
   }
 
-  if (result.error) {
-    return res.status(400).json(result);
+  if (result.success) {
+    // TODO: the best way would to add mongoose middlewar for whenever
+    // user portfolio changes, but i don't know how to do it for a subdocument -_-
+    updatePortfolio(user._id.toString(), result.resp.portfolio);
+    return res.status(200).json({ success: result.success, msg: result.msg });
+  } else {
+    res.status(400).json(result);
   }
-  if (result.failure) {
-    log.error(result);
-    return res.status(500).json({ error: "Server kaput" });
-  }
-
-  // TODO: the best way would to add mongoose middlewar for whenever
-  // user portfolio changes, but i don't know how to do it for a subdocument -_-
-  updatePortfolio(user._id, result.portfolio);
-  return res.status(200).json({ success: "Updated" });
 }
 
 async function portfolioUpdateExisting(id, amount, userID) {
   try {
     if (amount < 0)
       return {
-        error: `Bad request. Editing ${id} bv requested amount would bring it to ${amount}`,
+        success: false,
+        msg: "Cannot sell more stock than you own.",
       };
 
-    if (amount === 0)
-      return await User.findOneAndUpdate(
+    if (amount === 0) {
+      const resp = await User.findOneAndUpdate(
         { _id: userID },
         { $pull: { portfolio: { id } } },
-        { new: true }
+        { new: true, lean: true }
       );
 
-    return await User.findOneAndUpdate(
+      return resp
+        ? { success: true, msg: `Sold all owned ${id}.`, resp }
+        : { success: false, msg: "Server error. DB resp null." };
+    }
+
+    const resp = await User.findOneAndUpdate(
       { _id: userID, "portfolio.id": id },
       { $set: { "portfolio.$.amount": amount } },
-      { new: true }
+      { new: true, lean: true }
     );
+
+    return resp
+      ? { success: true, msg: `Order fullfilled.`, resp }
+      : { success: false, msg: "Server error. DB resp null." };
   } catch (error) {
-    return { failure: error };
+    log.error(error);
+    return { success: false, msg: "Server error." };
   }
 }
 
@@ -83,16 +90,22 @@ async function porfolioInserNew(id, amount, userID) {
   try {
     if (amount < 0)
       return {
-        error: "Bad request. Cannot insert new item with negative amount.",
+        success: false,
+        msg: "Cannot sell stock you dont't own.",
       };
 
-    return await User.findOneAndUpdate(
+    const resp = await User.findOneAndUpdate(
       { _id: userID },
       { $push: { portfolio: { id, amount } } },
-      { new: true }
+      { new: true, lean: true }
     );
+
+    return resp
+      ? { success: true, msg: "Buy order fullfilled.", resp }
+      : { success: false, msg: "Server error. DB resp null." };
   } catch (error) {
-    return { failure: error };
+    log.error(error);
+    return { success: false, msg: "Server error." };
   }
 }
 

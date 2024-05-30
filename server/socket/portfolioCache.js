@@ -35,8 +35,11 @@ const getPortfolio = (userID) => {
 };
 
 const updatePortfolio = (userID, portfolio) => {
+  log.debug("Cache update request");
   if (cache.has(userID)) {
     cache.set(userID, portfolio);
+    log.debug(`Updated ${userID} portfolio cache`);
+    console.log(portfolio);
   } else {
     log.error(`ATTEMPTED TO UDPATE PORTFOLIO FOR NON EXISTENT USER ${userID}`);
   }
