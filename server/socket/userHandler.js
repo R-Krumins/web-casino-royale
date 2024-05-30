@@ -9,6 +9,10 @@ const TICK_SPEED = 1000 / process.env.SIM_TICKS_PER_SECOND;
 module.exports = (io, socket, user) => {
   async function getPorfolio(userID, date) {
     const portfolio = cache.getPortfolio(userID);
+    if (portfolio === null) {
+      log.error(`player's ${userID} portfolio is NULL!!!`);
+      return;
+    }
 
     const update = await Promise.all(
       portfolio.map(async (item) => {

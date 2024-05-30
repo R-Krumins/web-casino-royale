@@ -11,8 +11,10 @@ function Portfolio() {
 
   useEffect(() => {
     socket.on("update", (data: any) => {
-      const update: PortfolioItem[] = data.update;
-      if (update.every((item) => item === null)) return;
+      let update: PortfolioItem[] = data.update;
+      update = update.filter((x) => x !== null);
+      if (update.length === 0) return;
+      // if (update.every((item) => item === null)) return;
 
       //console.log(update);
       setPortfolioItems(update);
