@@ -112,20 +112,14 @@ async function porfolioInserNew(id, amount, userID) {
 // gets the data of alll users owned stocks on particular date
 async function portfolioItemsDatePoint_GET(req, res) {
   const { date } = req.params;
-  const stocks = req.user.portfolio.map((i) => {
-    return { _id: i.id };
-  });
+  const portfolio = req.user.portfolio;
+  const stocks = portfolio.map((x) => x.id);
 
-  let resp = await Stock.find(
-    { $or: stocks, "data.date": date },
-    { "data.$": 1 },
-    { lean: true }
+  let resp = await Stock.findManyByDate(stocks, date);
+
+  resp.forEach(
+    (x) => (x.amount = portfolio.find((y) => y.id === x._id).amount)
   );
-
-  // this is potentially stupid but oh well
-  resp = resp.map((x) => {
-    return { id: x._id, amount: 0, ...x.data[0] };
-  });
 
   return res.status(200).json(resp);
 }

@@ -23,6 +23,19 @@ const stockSchema = new Schema({
   },
 });
 
+// static methods
+
+stockSchema.statics.findManyByDate = function (stocks, date) {
+  return Stock.aggregate(
+    [
+      { $match: { _id: { $in: stocks } } },
+      { $unwind: { path: "$data" } },
+      { $match: { "data.date": date } },
+    ],
+    { lean: true }
+  );
+};
+
 const Stock = mongoose.model("Stock", stockSchema);
 
 module.exports = {

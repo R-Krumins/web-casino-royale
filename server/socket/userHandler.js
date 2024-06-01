@@ -6,36 +6,30 @@ const cache = require("./portfolioCache");
 
 const TICK_SPEED = 1000 / process.env.SIM_TICKS_PER_SECOND;
 
+async function simUpdate(socket, user, date, simSpeed) {
+  if (simSpeed === 0) return;
+  const portfolio = cache.getPortfolio(user.id);
+  // portfolio can be null if player suddenly disconects and cache entry is cleared
+  if (!portfolio) return;
+  const stocks = portfolio.map((x) => x.id);
+  const update = await Stock.findManyByDate(stocks, date);
+
+  // add amount to each stock
+  update.forEach(
+    (x) => (x.amount = portfolio.find((y) => y.id === x._id).amount)
+  );
+
+  socket.emit("update", { date: date, update: update });
+}
+
 module.exports = (io, socket, user) => {
-  async function getPorfolio(userID, date) {
-    const portfolio = cache.getPortfolio(userID);
-    if (portfolio === null) {
-      log.error(`player's ${userID} portfolio is NULL!!!`);
-      return;
-    }
-
-    const update = await Promise.all(
-      portfolio.map(async (item) => {
-        const retrieved = await Stock.findOne(
-          { _id: item.id, "data.date": date },
-          { "data.$": 1 },
-          { lean: true }
-        );
-
-        if (!retrieved) return null;
-        return { ...item, ...retrieved.data[0] };
-      })
-    );
-
-    socket.volatile.emit("update", { date: date, update: update });
-  }
-
   function init() {
     const name = user.username;
     log.info(name + " has started sim");
     cache.registerNewUser(user.id);
     let simDate = new Date("2017-01-01");
     let simSpeed = 0;
+    let intervalID; // id returned by setInterval()
 
     socket.on("change-speed", (speed) => {
       log.debug(`${name} changed SIM SPEED to ${speed}`);
@@ -44,12 +38,12 @@ module.exports = (io, socket, user) => {
 
     socket.on("disconnect", () => {
       cache.removeUser(user.id);
+      clearInterval(intervalID);
     });
 
     // MAIN GAME LOOP
-    setInterval(() => {
-      if (simSpeed === 0) return;
-      getPorfolio(user.id, format(simDate, "yyyy-MM-dd"));
+    intervalID = setInterval(() => {
+      simUpdate(socket, user, format(simDate, "yyyy-MM-dd"), simSpeed);
       simDate = addDays(simDate, 1);
     }, TICK_SPEED);
   }
