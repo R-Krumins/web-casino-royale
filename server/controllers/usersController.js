@@ -3,7 +3,6 @@ const { Stock } = require("../models/stockModel");
 const { getStocks } = require("./stocksController");
 const log = require("../lib/logger")();
 const { validationResult } = require("express-validator");
-const { updatePortfolio } = require("../socket/portfolioCache");
 
 async function getUser(req, res) {
   const { username } = req.params;
@@ -42,9 +41,6 @@ async function portfolio_POST(req, res) {
   }
 
   if (result.success) {
-    // TODO: the best way would to add mongoose middlewar for whenever
-    // user portfolio changes, but i don't know how to do it for a subdocument -_-
-    updatePortfolio(user._id.toString(), result.resp.portfolio);
     return res.status(200).json({ success: result.success, msg: result.msg });
   } else {
     res.status(400).json(result);
