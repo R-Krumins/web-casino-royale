@@ -24,15 +24,14 @@ async function simUpdate(socket, user, date, simSpeed) {
 
 module.exports = (io, socket, user) => {
   function init() {
-    const name = user.username;
-    log.info(name + " has started sim");
+    log.info(user.username + " has started sim");
     cache.registerNewUser(user.id);
     let simDate = new Date("2017-01-01");
     let simSpeed = 0;
-    let intervalID; // id returned by setInterval()
+    let intervalID; // id returned by setInterval()q
 
     socket.on("change-speed", (speed) => {
-      log.debug(`${name} changed SIM SPEED to ${speed}`);
+      log.debug(`${user.username} changed SIM SPEED to ${speed}`);
       simSpeed = speed;
     });
 

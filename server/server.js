@@ -7,7 +7,7 @@ const authRouter = require("./routes/authRouter");
 const cors = require("cors");
 const { Server } = require("socket.io");
 const mongoose = require("mongoose");
-const userHandler = require("./socket/userHandler");
+const simHandler = require("./socket/simHandler");
 const log = require("./lib/logger")();
 const cookieParser = require("cookie-parser");
 const path = require("path");
@@ -44,7 +44,7 @@ io.on("connection", (socket) => {
 
   const user = socket.handshake.query;
   if (user.id) {
-    userHandler(io, socket, user);
+    simHandler(io, socket, user);
   }
 });
 
