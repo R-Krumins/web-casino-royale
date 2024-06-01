@@ -21,26 +21,26 @@ function Portfolio() {
 
       setValue(
         update.reduce((sum, item) => {
-          return sum + item.data.close;
+          return sum + item.close;
         }, 0)
       );
     });
   }, [socket]);
 
   // do a inital fetch of users stocks
-  async function initalFetch() {
-    try {
-      const res = await fetch("/api/users/porfolio/date/2013-10-15");
-      const json = await res.json();
-      setPortfolioItems(json);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // async function initalFetch() {
+  //   try {
+  //     const res = await fetch("/api/users/porfolio/date/2013-10-15");
+  //     const json = await res.json();
+  //     setPortfolioItems(json);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
-  useEffect(() => {
-    initalFetch();
-  }, []);
+  // useEffect(() => {
+  //   initalFetch();
+  // }, []);
   return (
     <>
       <div className="stats">
@@ -52,9 +52,9 @@ function Portfolio() {
         {portfolioItems?.map((item, index) => (
           <ItemListing
             key={index}
-            item={item._id}
+            item={item.symbol}
             amount={item.amount}
-            price={item.data.close.toFixed(2)}
+            price={item.close.toFixed(2)}
           />
         ))}
       </ul>

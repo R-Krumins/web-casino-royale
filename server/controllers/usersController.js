@@ -110,6 +110,7 @@ async function porfolioInserNew(id, amount, userID) {
 }
 
 // gets the data of alll users owned stocks on particular date
+// !!!DEPRECATED!!!
 async function portfolioItemsDatePoint_GET(req, res) {
   const { date } = req.params;
   const portfolio = req.user.portfolio;

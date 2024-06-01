@@ -1,5 +1,4 @@
 const { User } = require("../models/userModel");
-const { Stock } = require("../models/stockModel");
 const { format, addDays } = require("date-fns");
 const log = require("../lib/logger")();
 const cache = require("./portfolioCache");
@@ -12,13 +11,7 @@ async function simUpdate(socket, user, date, simSpeed) {
   // portfolio can be null if player suddenly disconects and cache entry is cleared
   if (!portfolio) return;
   const stocks = portfolio.map((x) => x.id);
-  const update = await Stock.findManyByDate(stocks, date);
-
-  // add amount to each stock
-  update.forEach(
-    (x) => (x.amount = portfolio.find((y) => y.id === x._id).amount)
-  );
-
+  const update = await User.findPortfolioOnDate(user.id, date);
   socket.emit("update", { date: date, update: update });
 }
 

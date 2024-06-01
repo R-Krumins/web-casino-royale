@@ -7,15 +7,12 @@ export type SearchResult = {
 };
 
 export type PortfolioItem = {
-  _id: string;
+  symbol: string;
   amount: number;
-  data: {
-    date: string;
-    open: number;
-    high: number;
-    low: number;
-    close: number;
-    adjclose: number;
-    volume: number;
-  };
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  adjclose: number;
+  volume: number;
 };
