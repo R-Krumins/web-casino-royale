@@ -21,6 +21,7 @@ function Login() {
         <h1>Sign Up</h1>
         <label htmlFor="username">Username</label>
         <input
+          id="username-input"
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -31,6 +32,7 @@ function Login() {
 
         <label htmlFor="password">Password</label>
         <input
+          id="password-input"
           type="password"
           value={password}
           onChange={(ev) => setPassword(ev.target.value)}
@@ -38,7 +40,9 @@ function Login() {
           required
         />
         <div className="error password">{passwordError}</div>
-        <button disabled={isLoading}>Sign Up</button>
+        <button id="submit-btn" disabled={isLoading}>
+          Sign Up
+        </button>
         <Link to="/login">or login</Link>
       </form>
     </div>

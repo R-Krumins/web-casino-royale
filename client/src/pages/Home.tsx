@@ -18,7 +18,7 @@ function Home() {
             <button id="home-login-btn" onClick={() => navigate("/login")}>
               Log In
             </button>
-            <button id="home-singup-btn" onClick={() => navigate("/signup")}>
+            <button id="home-signup-btn" onClick={() => navigate("/signup")}>
               Sign Up
             </button>
           </div>
