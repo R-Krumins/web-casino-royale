@@ -21,8 +21,8 @@ async function getStockBySymbol(req, res) {
   console.log(id, from, to);
 
   // check if dates valid
-  fromD = new Date(from);
-  toD = new Date(to);
+  const fromD = new Date(from);
+  const toD = new Date(to);
 
   if (isNaN(fromD) || isNaN(toD))
     return res.status(400).json({ error: "Invalid dates" });

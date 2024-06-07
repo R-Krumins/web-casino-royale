@@ -3,7 +3,6 @@ logs
 *.log
 
 #react
-dist
 dist-ssr
 *.local
 
@@ -13,4 +12,5 @@ node_modules
 rundev.sh
 .vscode
 server/public
+dist
 
