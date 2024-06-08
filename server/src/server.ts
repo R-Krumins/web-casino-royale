@@ -9,7 +9,8 @@ const authRouter = require("./routes/authRouter");
 const cors = require("cors");
 import { Server } from "socket.io";
 import mongoose from "mongoose";
-const simHandler = require("./socket/simHandler");
+import simHandler from "./socket/simHandler";
+import { isStringObject } from "util/types";
 const log = require("./lib/logger")();
 const cookieParser = require("cookie-parser");
 const path = require("path");
@@ -45,9 +46,16 @@ app.use("/api/auth", authRouter);
 io.on("connection", (socket) => {
   log.info(`User Connected: ${socket.id}`);
 
-  const user = socket.handshake.query;
-  if (user.id) {
-    simHandler(io, socket, user);
+  const { username, id } = socket.handshake.query as {
+    username: string;
+    id: string;
+  };
+  console.log(username, id);
+
+  if (username && id) {
+    simHandler(socket, username, id);
+  } else {
+    console.log("FUCK");
   }
 });
 
