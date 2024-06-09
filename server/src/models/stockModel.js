@@ -38,6 +38,19 @@ const stockDataSchema = new Schema(
   { collection: "stockData" }
 );
 
+const stockMetaSchema = new Schema(
+  {
+    _id: { type: String },
+    src: { type: String },
+    name: { type: String },
+    industry: { type: String },
+    desc: { type: String },
+    logo: { type: String },
+    wentPublic: { type: String },
+  },
+  { collection: "stockMeta" }
+);
+
 // static methods
 stockSchema.statics.findManyByDate = function (stocks, date) {
   return this.aggregate(
@@ -62,17 +75,14 @@ stockDataSchema.statics.findOneBetweenDates = function (symbol, from, to) {
     { _id: 0, symbol: 0 },
     { lean: true }
   );
-
-  // return this.find({
-  //   symbol: "AAPL",
-  //   // date: { $gte: "2018-01-01", $lte: "2020-05-01" },
-  // });
 };
 
 const Stock = mongoose.model("Stock", stockSchema);
 const StocksData = mongoose.model("stockData", stockDataSchema);
+const StockMeta = mongoose.model("stockMeta", stockMetaSchema);
 
 module.exports = {
   Stock,
   StocksData,
+  StockMeta,
 };

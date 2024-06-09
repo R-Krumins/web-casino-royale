@@ -1,4 +1,4 @@
-const { StocksData } = require("../models/stockModel");
+const { StocksData, StockMeta } = require("../models/stockModel");
 const log = require("../lib/logger")();
 import { type Request, type Response } from "express";
 
@@ -37,7 +37,25 @@ async function getStockBySymbol(req: Request, res: Response) {
   }
 }
 
+async function getStockInfo(req: Request, res: Response) {
+  const id = req.params.id;
+
+  try {
+    const data = await StockMeta.findOne({ _id: id });
+
+    if (!data) {
+      return res.status(400).json({ error: "No such stock" });
+    }
+
+    return res.status(200).json({ data });
+  } catch (error) {
+    log.error(error);
+    return res.status(500).json({ error: "Server error" });
+  }
+}
+
 module.exports = {
   findStock,
   getStockBySymbol,
+  getStockInfo,
 };

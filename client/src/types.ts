@@ -6,6 +6,16 @@ export type SearchResult = {
   refIndex: number;
 };
 
+export type StockInfo = {
+  _id: string;
+  src: string | null;
+  name: string | null;
+  industry: string | null;
+  desc: string | null;
+  logo: string | null;
+  wentPublic: string | null;
+};
+
 export type PortfolioItem = {
   symbol: string;
   amount: number;
