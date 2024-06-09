@@ -40,7 +40,7 @@ async function simUpdate({ socket, id, currentSimDate, simSpeed }: Player) {
   if (simSpeed === 0) return;
 
   const date = format(currentSimDate, "yyyy-MM-dd");
-  const update = await User.findPortfolioOnDate(id, date);
+  const update = await User.findPortfolioOnDate(id, currentSimDate);
   socket.emit("update", { date: date, update: update });
 }
 

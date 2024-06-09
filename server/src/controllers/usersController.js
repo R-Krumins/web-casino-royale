@@ -1,5 +1,4 @@
 const { User } = require("../models/userModel");
-const { Stock } = require("../models/stockModel");
 const { getStocks } = require("./stocksController");
 const log = require("../lib/logger")();
 const { validationResult } = require("express-validator");
@@ -105,25 +104,8 @@ async function porfolioInserNew(id, amount, userID) {
   }
 }
 
-// gets the data of alll users owned stocks on particular date
-// !!!DEPRECATED!!!
-async function portfolioItemsDatePoint_GET(req, res) {
-  const { date } = req.params;
-  const portfolio = req.user.portfolio;
-  const stocks = portfolio.map((x) => x.id);
-
-  let resp = await Stock.findManyByDate(stocks, date);
-
-  resp.forEach(
-    (x) => (x.amount = portfolio.find((y) => y.id === x._id).amount)
-  );
-
-  return res.status(200).json(resp);
-}
-
 module.exports = {
   getUser,
   portfolio_GET,
-  portfolioItemsDatePoint_GET,
   portfolio_POST,
 };

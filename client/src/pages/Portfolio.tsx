@@ -27,20 +27,6 @@ function Portfolio() {
     });
   }, [socket]);
 
-  // do a inital fetch of users stocks
-  // async function initalFetch() {
-  //   try {
-  //     const res = await fetch("/api/users/porfolio/date/2013-10-15");
-  //     const json = await res.json();
-  //     setPortfolioItems(json);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   initalFetch();
-  // }, []);
   return (
     <>
       <div className="stats">

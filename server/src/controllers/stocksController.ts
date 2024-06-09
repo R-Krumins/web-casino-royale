@@ -1,4 +1,4 @@
-const { StocksData, StockMeta } = require("../models/stockModel");
+const { StockData, StockMeta } = require("../models/stockModel");
 const log = require("../lib/logger")();
 import { type Request, type Response } from "express";
 
@@ -29,7 +29,7 @@ async function getStockBySymbol(req: Request, res: Response) {
     return res.status(400).json({ error: "From date is larger than to" });
 
   try {
-    const result = await StocksData.findOneBetweenDates(id, from, to);
+    const result = await StockData.findOneBetweenDates(id, from, to);
     return res.status(200).json({ data: result });
   } catch (error) {
     log.error(error);
