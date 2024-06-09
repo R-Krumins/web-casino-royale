@@ -14,7 +14,7 @@ const fuse = new Fuse(data, options);
 
 function searchStockIndex(req, res, next) {
   const results = fuse.search(req.query.q);
-  req.stock = results.slice(0, RESULTS_COUNT);
+  req.body.stock = results.slice(0, RESULTS_COUNT);
   next();
 }
 
