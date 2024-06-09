@@ -16,7 +16,7 @@ function Login() {
 
   return (
     <div id="auth-container">
-      <img src="./src/assets/bull.jpg" alt="bull" />
+      <img src="./images/bull.jpg" alt="bull" />
       <form onSubmit={handleSumbit} className="auth-form signup">
         <h2>Login</h2>
 

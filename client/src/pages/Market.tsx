@@ -8,7 +8,7 @@ import { StockInfo } from "../types";
 function Market() {
   const [item, setItem] = useState<StockInfo | null>(null);
 
-  const handleResultSelected = async (symbol: string, name: string) => {
+  const handleResultSelected = async (symbol: string) => {
     const res = await fetch(`/api/stocks/info/${symbol}`);
 
     if (!res.ok) {

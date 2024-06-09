@@ -1,9 +1,9 @@
 import { createContext } from "react";
-import io from "socket.io-client";
+import io, { Socket } from "socket.io-client";
 
-export const SocketContext = createContext<io.Socket | undefined>(undefined);
+export const SocketContext = createContext<Socket | undefined>(undefined);
 
-let socket: io.Socket | undefined = undefined;
+let socket: Socket | undefined = undefined;
 
 type User = {
   username: string;

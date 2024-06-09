@@ -35,7 +35,7 @@ const io = new Server(server, {
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.static("../public"));
+app.use(express.static("./public"));
 
 //routing
 app.use("/api/stocks", stocksRouter);
