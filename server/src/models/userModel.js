@@ -81,37 +81,6 @@ userSchema.statics.findPortfolioOnDate = function (userId, date) {
       },
     },
   ]);
-
-  // return this.aggregate([
-  //   // TODO: dont't create a new ObjectID everytime this function is called!
-  //   { $match: { _id: new mongoose.Types.ObjectId(userId) } },
-  //   { $project: { portfolio: 1 } },
-  //   { $unwind: "$portfolio" },
-  //   {
-  //     $lookup: {
-  //       from: "stocks",
-  //       localField: "portfolio.id",
-  //       foreignField: "_id",
-  //       as: "stocks",
-  //     },
-  //   },
-  //   { $unwind: "$stocks" },
-  //   { $unwind: "$stocks.data" },
-  //   { $match: { "stocks.data.date": date } },
-  //   {
-  //     $project: {
-  //       _id: 0,
-  //       symbol: "$portfolio.id",
-  //       amount: "$portfolio.amount",
-  //       open: "$stocks.data.open",
-  //       high: "$stocks.data.high",
-  //       low: "$stocks.data.low",
-  //       close: "$stocks.data.close",
-  //       adjclose: "$stocks.data.adjclose",
-  //       volume: "$stocks.data.volume",
-  //     },
-  //   },
-  // ]);
 };
 
 const User = mongoose.model("User", userSchema);

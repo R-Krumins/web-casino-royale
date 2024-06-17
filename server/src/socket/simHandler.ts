@@ -25,11 +25,30 @@ type Player = {
   socket: Socket;
 };
 
+type Update = {
+  portfolio:
+    | [
+        {
+          symbol: string;
+          amount: number;
+          open: number;
+          high: number;
+          low: number;
+          close: number;
+          adjclose: number;
+          volume: number;
+        }
+      ]
+    | [];
+  liquidCash: number;
+  curentDate: string;
+};
+
 const createPlayer = (socket: Socket, name: string, id: string): Player => {
   return {
     name,
     id,
-    currentSimDate: new Date("2017-01-01"),
+    currentSimDate: new Date("2003-01-01"),
     simSpeed: 0,
     runningIntervalID: undefined,
     socket,
@@ -41,8 +60,10 @@ async function simUpdate({ socket, id, currentSimDate, simSpeed }: Player) {
   if (simSpeed === 0) return;
 
   const date = format(currentSimDate, "yyyy-MM-dd");
-  const update = await User.findPortfolioOnDate(id, currentSimDate);
-  socket.emit("update", { date: date, update: update });
+  const portfolio = await User.findPortfolioOnDate(id, currentSimDate);
+  const update: Update = { portfolio, liquidCash: 69, curentDate: date };
+
+  socket.emit("update", update);
 }
 
 export default (socket: Socket, name: string, id: string) => {

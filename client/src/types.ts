@@ -15,14 +15,3 @@ export type StockInfo = {
   logo: string | null;
   wentPublic: string | null;
 };
-
-export type PortfolioItem = {
-  symbol: string;
-  amount: number;
-  open: number;
-  high: number;
-  low: number;
-  close: number;
-  adjclose: number;
-  volume: number;
-};

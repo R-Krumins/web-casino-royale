@@ -1,16 +1,19 @@
 import Navbar from "../components/Navbar";
 import { Outlet } from "react-router-dom";
 import { SocketContextProvider } from "../context/SocketContext";
+import { SimContextProvider } from "../context/SimContext";
 
 function Play() {
   return (
     <SocketContextProvider>
-      <div id="play-container">
-        <Navbar />
-        <div id="subpage-container">
-          <Outlet />
+      <SimContextProvider>
+        <div id="play-container">
+          <Navbar />
+          <div id="subpage-container">
+            <Outlet />
+          </div>
         </div>
-      </div>
+      </SimContextProvider>
     </SocketContextProvider>
   );
 }
