@@ -1,5 +1,5 @@
 const Fuse = require("fuse.js");
-const data = require("./stockIndex.json");
+const data = require("./searchIndex.json");
 
 // how many search resulst to return?
 const RESULTS_COUNT = 5;

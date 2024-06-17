@@ -11,11 +11,8 @@ type User = {
 };
 
 export const connectSocket = (user: User) => {
-  //TODO: fix connection URL
-  console.log("ASS");
-  console.log(user);
-
-  socket = io("http://localhost:3000", {
+  console.log("INIT SOCKET CONNECTION");
+  socket = io({
     query: { username: user.username, id: user.id },
   });
 };

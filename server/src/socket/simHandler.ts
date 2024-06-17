@@ -37,6 +37,7 @@ const createPlayer = (socket: Socket, name: string, id: string): Player => {
 };
 
 async function simUpdate({ socket, id, currentSimDate, simSpeed }: Player) {
+  //log.debug("SIM UPDATE");
   if (simSpeed === 0) return;
 
   const date = format(currentSimDate, "yyyy-MM-dd");
