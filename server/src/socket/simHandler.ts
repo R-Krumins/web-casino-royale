@@ -75,6 +75,7 @@ async function simUpdate({
   };
 
   socket.emit("update", update);
+  currentSimDate.setUTCHours(24, 0, 0, 0); // FUCK DAYTIME SAVINGS
 }
 
 export default (socket: Socket, name: string, id: string) => {
@@ -98,7 +99,6 @@ export default (socket: Socket, name: string, id: string) => {
     // MAIN GAME LOOP
     player.runningIntervalID = setInterval(() => {
       simUpdate(player);
-      player.currentSimDate.setUTCHours(24, 0, 0, 0); // FUCK DAYTIME SAVINGS
     }, TICK_SPEED);
   }
 

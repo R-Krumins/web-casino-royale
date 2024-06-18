@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Popup from "reactjs-popup";
 import "../css/orderPopup.css";
+import { useSocketContext } from "../hooks/useSocketContext";
+import { useSimContext } from "../hooks/useSimContext";
 
 type Props = {
   type: "Buy" | "Sell";
@@ -12,10 +14,18 @@ function Order({ type, stockSymbol }: Props) {
   const [count, setCount] = useState("");
   const [responseMsg, setResponseMsg] = useState<string | null>(null);
   const [btnIsDisabled, setBtnIsDisabled] = useState(false);
+  const socket = useSocketContext();
+  const { searched, liquidCash } = useSimContext();
+
+  const openModal = () => {
+    socket.emit("change-speed", 0);
+    setIsOpen((o) => !o);
+  };
 
   const closeModal = () => {
     setCount("");
     setResponseMsg(null);
+    socket.emit("change-speed", 1);
     setIsOpen(false);
   };
 
@@ -25,6 +35,14 @@ function Order({ type, stockSymbol }: Props) {
     if (kc === 13) return handleOrderPlaced();
     //1-9 or backspace
     if ((kc !== 8 && kc < 48) || kc > 57) e.preventDefault();
+  };
+
+  const getCalculation = (): string => {
+    const stockPrice = searched?.close.toFixed(2);
+    const countNumb = Number(count);
+    const price = searched && (searched.close * countNumb).toFixed(2);
+
+    return `$${stockPrice} * ${countNumb} = $${price}`;
   };
 
   const handleOrderPlaced = async () => {
@@ -48,7 +66,7 @@ function Order({ type, stockSymbol }: Props) {
 
   return (
     <div>
-      <button onClick={() => setIsOpen((o) => !o)}>{type} Order</button>
+      <button onClick={openModal}>{type} Order</button>
       <Popup open={isOpen} onClose={closeModal} modal>
         <div className="order-popup-container">
           <button className="close-btn" onClick={closeModal}>
@@ -59,7 +77,11 @@ function Order({ type, stockSymbol }: Props) {
             <strong>For: </strong> {stockSymbol}
           </p>
           <p>
-            <strong>Current Price</strong> $0
+            <strong>Price:</strong>
+            {getCalculation()}
+          </p>
+          <p>
+            <strong>Cash on hand: </strong>${liquidCash.toFixed(2)}
           </p>
           <input
             value={count}
