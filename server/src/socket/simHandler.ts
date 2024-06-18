@@ -98,7 +98,7 @@ export default (socket: Socket, name: string, id: string) => {
     // MAIN GAME LOOP
     player.runningIntervalID = setInterval(() => {
       simUpdate(player);
-      player.currentSimDate = addDays(player.currentSimDate, 1);
+      player.currentSimDate.setUTCHours(24, 0, 0, 0); // FUCK DAYTIME SAVINGS
     }, TICK_SPEED);
   }
 
