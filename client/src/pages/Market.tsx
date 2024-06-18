@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchBar from "../components/SearchBar";
 import "../css/market.css";
 import StockChart from "../components/StockChart";
 import Order from "../components/Order";
 import { StockInfo } from "../types";
+import { useSocketContext } from "../hooks/useSocketContext";
+import { useSimContext } from "../hooks/useSimContext";
 
 function Market() {
   const [item, setItem] = useState<StockInfo | null>(null);
+  const socket = useSocketContext();
+  const { searched } = useSimContext();
 
   const handleResultSelected = async (symbol: string) => {
     const res = await fetch(`/api/stocks/info/${symbol}`);
+    socket.emit("search", symbol);
 
     if (!res.ok) {
       console.log("Stock search failed!");
@@ -21,7 +26,12 @@ function Market() {
     setItem(json.data);
   };
 
-  console.log("RENDER");
+  //clearn up
+  useEffect(() => {
+    return () => {
+      socket.emit("search", null);
+    };
+  }, []);
 
   return (
     <>
@@ -45,6 +55,9 @@ function Market() {
               <Order type="Buy" stockSymbol={item._id} />
               <Order type="Sell" stockSymbol={item._id} />
             </div>
+            <p>
+              <strong>Price: </strong>${searched?.close.toFixed(2)}
+            </p>
             <p>
               <strong>Industry: </strong>
               {item.industry ? item.industry : "None"}

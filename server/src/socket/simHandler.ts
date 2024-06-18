@@ -1,6 +1,7 @@
 import { Socket } from "socket.io";
 
 const { User } = require("../models/userModel");
+const { StockData } = require("../models/stockModel");
 const { format, addDays } = require("date-fns");
 const log = require("../lib/logger")();
 
@@ -23,25 +24,14 @@ type Player = {
   simSpeed: number;
   runningIntervalID: ReturnType<typeof setInterval> | undefined; // id returned by setInterval()
   socket: Socket;
+  searchedSymbol: string | null;
 };
 
 type Update = {
-  portfolio:
-    | [
-        {
-          symbol: string;
-          amount: number;
-          open: number;
-          high: number;
-          low: number;
-          close: number;
-          adjclose: number;
-          volume: number;
-        }
-      ]
-    | [];
+  portfolio: Object[];
   liquidCash: number;
   curentDate: string;
+  searched: Object | null;
 };
 
 const createPlayer = (socket: Socket, name: string, id: string): Player => {
@@ -52,16 +42,37 @@ const createPlayer = (socket: Socket, name: string, id: string): Player => {
     simSpeed: 0,
     runningIntervalID: undefined,
     socket,
+    searchedSymbol: null,
   };
 };
 
-async function simUpdate({ socket, id, currentSimDate, simSpeed }: Player) {
+async function simUpdate({
+  socket,
+  id,
+  currentSimDate,
+  simSpeed,
+  searchedSymbol,
+}: Player) {
   //log.debug("SIM UPDATE");
   if (simSpeed === 0) return;
 
-  const date = format(currentSimDate, "yyyy-MM-dd");
   const portfolio = await User.findPortfolioOnDate(id, currentSimDate);
-  const update: Update = { portfolio, liquidCash: 69, curentDate: date };
+
+  let searched = null;
+  if (searchedSymbol) {
+    searched = await StockData.findOne({
+      symbol: searchedSymbol,
+      date: currentSimDate,
+    });
+  }
+
+  const date = format(currentSimDate, "yyyy-MM-dd");
+  const update: Update = {
+    portfolio,
+    liquidCash: 69,
+    curentDate: date,
+    searched,
+  };
 
   socket.emit("update", update);
 }
@@ -70,6 +81,10 @@ export default (socket: Socket, name: string, id: string) => {
   function init() {
     const player = createPlayer(socket, name, id);
     log.info(player.name + " has started sim");
+
+    socket.on("search", (symbol: string | null) => {
+      player.searchedSymbol = symbol;
+    });
 
     socket.on("change-speed", (speed) => {
       log.debug(`${player.name} changed SIM SPEED to ${speed}`);

@@ -1,24 +1,23 @@
 import { createContext, useEffect, useState } from "react";
 import { useSocketContext } from "../hooks/useSocketContext";
 
+type Item = {
+  symbol: string;
+  amount: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  adjclose: number;
+  volume: number;
+};
+
 type SimData = {
-  portfolio:
-    | [
-        {
-          symbol: string;
-          amount: number;
-          open: number;
-          high: number;
-          low: number;
-          close: number;
-          adjclose: number;
-          volume: number;
-        }
-      ]
-    | [];
+  portfolio: Item[] | [];
   portfolioValue: number;
   liquidCash: number;
   curentDate: string;
+  searched: Item | null;
 };
 
 const intialState: SimData = {
@@ -26,6 +25,7 @@ const intialState: SimData = {
   portfolioValue: 0,
   liquidCash: 0,
   curentDate: "0000-00-00",
+  searched: null,
 };
 
 const SimContext = createContext<SimData | null>(null);
