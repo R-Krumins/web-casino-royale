@@ -57,6 +57,10 @@ async function simUpdate({
   if (simSpeed === 0) return;
 
   const portfolio = await User.findPortfolioOnDate(id, currentSimDate);
+  const { liquidCash } = await User.findOne(
+    { _id: id },
+    { _id: 0, liquidCash: 1 }
+  ).lean();
 
   let searched = null;
   if (searchedSymbol) {
@@ -69,7 +73,7 @@ async function simUpdate({
   const date = format(currentSimDate, "yyyy-MM-dd");
   const update: Update = {
     portfolio,
-    liquidCash: 69,
+    liquidCash,
     curentDate: date,
     searched,
   };
