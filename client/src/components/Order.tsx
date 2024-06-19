@@ -45,18 +45,37 @@ function Order({ type, stockSymbol }: Props) {
     return `$${stockPrice} * ${countNumb} = $${price}`;
   };
 
+  //TODO: fix this abomonation of code, move validation logic server side
   const handleOrderPlaced = async () => {
     setBtnIsDisabled(true);
     setCount("");
-    const placedCount = type == "Buy" ? parseInt(count) : parseInt(count) * -1;
+
+    if (!searched) {
+      setBtnIsDisabled(false);
+      return;
+    }
+    const price = Number(count) * searched?.close;
+    const placedCount = Number(count);
+    const reqBody = JSON.stringify({
+      symbol: stockSymbol,
+      amount: placedCount,
+      price: price,
+    });
+
     try {
-      const resp = await fetch(
-        `/api/users/portfolio/add?id=${stockSymbol}&amount=${placedCount}`,
-        { method: "POST" }
-      );
+      const resp = await fetch(`/api/users/portfolio/${type.toLowerCase()}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: reqBody,
+      });
+
       const json = await resp.json();
 
-      setResponseMsg(json.msg);
+      if (json.error) {
+        setResponseMsg(json.error);
+      } else {
+        setResponseMsg(json.msg);
+      }
     } catch (error) {
       console.log(error);
     }

@@ -27,6 +27,7 @@ const userSchema = new Schema({
     minlength: [6, "Minimum password lenght is 6 characters"],
   },
   portfolio: { type: [portfolioSchema], required: true },
+  liquidCash: { type: Number, default: 10_000 },
 });
 
 // password hasher

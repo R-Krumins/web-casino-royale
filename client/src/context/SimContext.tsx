@@ -41,16 +41,21 @@ const SimContextProvider = ({ children }: any) => {
   const handleUpdate = (update: SimData) => {
     if (!update) return;
 
-    if (update.portfolio.length === 0) {
-      setSimData((prev) => ({ ...prev, curentDate: update.curentDate }));
-      return;
+    let portfolioValue = null;
+    if (update.portfolio.length !== 0) {
+      portfolioValue = update.portfolio.reduce((sum, item) => {
+        return sum + item.close * item.amount;
+      }, 0);
     }
 
-    update.portfolioValue = update.portfolio.reduce((sum, item) => {
-      return sum + item.close * item.amount;
-    }, 0);
-
-    setSimData(update);
+    setSimData((prev) => ({
+      portfolio:
+        update.portfolio.length === 0 ? prev.portfolio : update.portfolio,
+      portfolioValue: portfolioValue || prev.portfolioValue,
+      liquidCash: update.liquidCash,
+      curentDate: update.curentDate,
+      searched: update.searched || prev.searched,
+    }));
   };
 
   return <SimContext.Provider value={simData}>{children}</SimContext.Provider>;
